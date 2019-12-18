@@ -62,11 +62,14 @@
             <p>Message: </p>
             <input id ="message" type="text">
             <button onclick="sendMessage(document.getElementById('message').value)">Envoyer</button>
+            <p>Pseudo: </p>
+            <input id ="pseudo" type="text">
+            <button onclick="setPseudo(document.getElementById('pseudo').value)">Envoyer Pseudo</button>
             <p>Message All: </p>
             <input id ="messageAll" type="text">
             <button onclick="sendMessageAll(document.getElementById('messageAll').value)">Envoyer</button>
-            <button onclick="play()">Rechercher Joueur</button>
-
+            <button onclick="searchGame()">Rechercher Joueur</button>
+            <button onclick="surrender()">Se rendre</button>
             <div id="output"></div>
             <p id="message"></p>
         </section>

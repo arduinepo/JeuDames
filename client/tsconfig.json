@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "sourceMap": true,
+    "baseUrl": "../server"
+  },
+  "include": [
+    "*.ts"
+  ],
+  "exclude": [
+    "../server/node_modules"
+  ]
+}

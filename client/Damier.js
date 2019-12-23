@@ -1,11 +1,10 @@
 "use strict";
 import {Prise} from "./Prise";
 import {Mouvement} from "./Mouvement";
+import {Case} from "./Case";
 
 const CASE_VIDE = 0, PION_BLANC = -1, DAME_BLANC = -2, PION_NOIR = 1, DAME_NOIR = 2;
-
 const HAUT_GAUCHE = 1, HAUT_DROIT = 2, BAS_DROIT = 3, BAS_GAUCHE = 4, HAUT = -1, GAUCHE = -1, BAS = 1, DROITE = 1;
-
 
 export const RESULTATS = {
     NUL: 0,
@@ -47,6 +46,68 @@ export class Damier {
         this.nombreDamesBlancs = this.nombreDamesNoirs = 0;
         this.tourBlanc = true;
         this.actionsPossibles = [];
+    }
+
+    /*- renvoyer cases accessibles depuis position initiale, depuis position courant après première prise
+    - renvoyer dernier mouvement
+    - supprimer pion pris
+    - déplacer pion
+    - promouvoir pion en dame si atteint ligne fond adverse
+    */
+
+    casesAccessiblesDepuis(caze) {
+        let cases = [];
+        let l = caze.ligne, c = caze.colonne;
+        switch (this.grille[l][c]) {
+            case DAME_NOIR:
+            case DAME_BLANC:
+                for (let pos = HAUT_GAUCHE; pos <= BAS_GAUCHE; pos++) {
+                    let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
+                    if (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9) {
+                        switch (this.grille[l2][c2]) {
+                            case CASE_VIDE:
+                                cases.push(new Case(l2, c2));
+                            case PION_BLANC:
+                            case DAME_BLANC:
+                                let l3 = this.getLigneVoisine(l2, pos), c3 = this.getColonneVoisine(c2, pos);
+                                if (this.grille[l3][c3] == CASE_VIDE)
+                                    cases.push(new Case(l3, c3));
+                        }
+                    }
+                }
+            case PION_NOIR:
+                for (let pos = BAS_DROIT; pos <= BAS_GAUCHE; pos++) {
+                    let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
+                    if (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9) {
+                        switch (this.grille[l2][c2]) {
+                            case CASE_VIDE:
+                                cases.push(new Case(l2, c2));
+                            case PION_BLANC:
+                            case DAME_BLANC:
+                                let l3 = this.getLigneVoisine(l2, pos), c3 = this.getColonneVoisine(c2, pos);
+                                if (this.grille[l3][c3] == CASE_VIDE)
+                                    cases.push(new Case(l3, c3));
+                        }
+                    }
+                }
+                break;
+            case PION_BLANC:
+                for (let pos = HAUT_GAUCHE; pos <= HAUT_DROIT; pos++) {
+                    let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
+                    if (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9) {
+                        switch (this.grille[l2][c2]) {
+                            case CASE_VIDE:
+                                cases.push(new Case(l2, c2));
+                            case PION_NOIR:
+                            case DAME_NOIR:
+                                let l3 = this.getLigneVoisine(l2, pos), c3 = this.getColonneVoisine(c2, pos);
+                                if (this.grille[l3][c3] == CASE_VIDE)
+                                    cases.push(new Case(l3, c3));
+                        }
+                    }
+                }
+        }
+        return cases;
     }
 
     toString() {
@@ -112,8 +173,7 @@ export class Damier {
 
     genereActionsPossibles() {
         this.prises();
-        if (this.actionsPossibles.length === 0)
-            this.mouvementsPossibles();
+        this.mouvementsPossibles();
     }
 
     prisePossible() {
@@ -244,7 +304,6 @@ export class Damier {
     }
 
     mouvementsPossibles() {
-        this.actionsPossibles = [];
         if (this.tourBlanc) {
             for (let i = 0; i < this.grille.length; i++)
                 for (let j = (i % 2 === 0) ? 0 : 1; j < this.grille.length; j = j + 2)

@@ -9,6 +9,10 @@ export class Mouvement extends Action {
         this.caseArrivee = new Case(l2, c2);
     }
 
+    caseArrivee() {
+        return this.caseArrivee;
+    }
+
     ligneArrivee() {
         return this.caseArrivee.ligne;
     }

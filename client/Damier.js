@@ -1,14 +1,18 @@
 "use strict";
-import {Prise, Mouvement} from "./Action";
+import {Prise, Mouvement} from "./Action.js";
+import {
+    CASE_VIDE,
+    PION_BLANC,
+    PION_NOIR,
+    DAME_BLANC,
+    DAME_NOIR,
+    NUL,
+    VICTOIRE_BLANC,
+    VICTOIRE_NOIR,
+    BLANC
+} from "./Constantes.js";
 
-const CASE_VIDE = 0, PION_BLANC = -1, DAME_BLANC = -2, PION_NOIR = 1, DAME_NOIR = 2;
 const HAUT_GAUCHE = 1, HAUT_DROIT = 2, BAS_DROIT = 3, BAS_GAUCHE = 4, HAUT = -1, GAUCHE = -1, BAS = 1, DROITE = 1;
-
-export const RESULTATS = {
-    NUL: 0,
-    VICTOIRE_BLANC: -1,
-    VICTOIRE_NOIR: 1
-};
 
 const DAMIER_TAILLE_10 = [
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
@@ -24,18 +28,25 @@ const DAMIER_TAILLE_10 = [
 ];
 
 export class Damier {
-    constructor() {
-        this.grille = DAMIER_TAILLE_10.slice(0, 10);
-        this.nombrePionsBlancs = this.nombrePionsNoirs = 20;
-        this.nombreDamesBlancs = this.nombreDamesNoirs = 0;
-        this.tourBlanc = true;
-        this.actionsPossibles = [];
+    constructor(damier) {
+        if (damier !== undefined) {
+            this.grille = damier.grille.slice(0, 10);
+            this.tourBlanc = damier.tourBlanc;
+            this.nombrePionsBlancs = damier.nombrePionsBlancs;
+            this.nombreDamesBlancs = damier.nombreDamesBlancs;
+            this.nombrePionsNoirs = damier.nombrePionsNoirs;
+            this.nombreDamesNoirs = damier.nombreDamesNoirs;
+        } else {
+            this.grille = DAMIER_TAILLE_10.slice(0, 10);
+            this.nombrePionsBlancs = this.nombrePionsNoirs = 20;
+            this.nombreDamesBlancs = this.nombreDamesNoirs = 0;
+            this.tourBlanc = BLANC;
+            this.actionsPossibles = [];
+        }
     }
 
     /*
-    refaire prises plus simplement
     partie, joueurs, IA,
-
 
     clic premiere case :
      si voisine et vide : si deplacement possible, deplacer;FIN
@@ -51,8 +62,8 @@ export class Damier {
     - renvoyer dernier mouvement
     */
 
-    pionAppartientAjoueur(ligne,colonne,joueurBlanc){
-        return (joueurBlanc && this.grille[ligne][colonne]<0)||(!joueurBlanc && this.grille[ligne][colonne]>0);
+    pionAppartientAjoueur(ligne, colonne, joueurBlanc) {
+        return (joueurBlanc && this.grille[ligne][colonne] < 0) || (!joueurBlanc && this.grille[ligne][colonne] > 0);
     }
 
     pionAdverseEntreCases(caseDepart, caseArrivee) {
@@ -230,21 +241,21 @@ export class Damier {
 
     resultat() {
         if (this.nombrePionsNoirs + this.nombreDamesNoirs === 0)
-            return RESULTATS.VICTOIRE_BLANC;
+            return VICTOIRE_BLANC;
         else if (this.nombrePionsBlancs + this.nombreDamesBlancs === 0)
-            return RESULTATS.VICTOIRE_NOIR;
+            return VICTOIRE_NOIR;
         else {
             if (this.actionsPossibles != null && this.actionsPossibles.length === 0) {
                 this.tourBlanc = !this.tourBlanc;
                 this.genereActionsPossibles();
                 if (this.actionsPossibles != null && this.actionsPossibles.length === 0)
-                    return RESULTATS.NUL;
+                    return NUL;
                 if (this.tourBlanc)
-                    return RESULTATS.VICTOIRE_BLANC;
-                return RESULTATS.VICTOIRE_NOIR;
+                    return VICTOIRE_BLANC;
+                return VICTOIRE_NOIR;
             }
         }
-        return RESULTATS.NUL;
+        return NUL;
     }
 
     partieFinie() {
@@ -396,7 +407,7 @@ export class Damier {
     * parcourt les cases voisines immédiates des pions simples, et les cases situées sur les diagonales des dames.
     */
     mouvementsPossibles() {
-        if (this.tourBlanc) {
+        if (this.tourBlanc===BLANC) {
             for (let i = 0; i < this.grille.length; i++)
                 for (let j = (i % 2 === 0) ? 0 : 1; j < this.grille.length; j = j + 2)
                     if (this.grille[i][j] === PION_BLANC)
@@ -460,7 +471,7 @@ export class Damier {
 
     /* Génère toutes les prises possibles de tous les pions du joueur qui a le tour. */
     prises() {
-        if (this.tourBlanc) {
+        if (this.tourBlanc===BLANC) {
             for (let i = 0; i < this.grille.length; i++)
                 for (let j = (i % 2 === 0) ? 0 : 1; j < this.grille.length; j = j + 2)
                     if (this.grille[i][j] === PION_BLANC || this.grille[i][j] === DAME_BLANC)
@@ -470,28 +481,22 @@ export class Damier {
                 for (let j = (i % 2 === 0) ? 0 : 1; j < this.grille.length; j = j + 2)
                     if (this.grille[i][j] === PION_NOIR || this.grille[i][j] === DAME_NOIR)
                         this.prisesPion(i, j);
+        // this.triePrisesDames();
     }
 
     /* Génère toutes les prises possibles d'un pion. */
     prisesPion(ligne, colonne) {
-        let prisesEnCours, prisesEtendues = [];
-        let n;
-        let prisesPion = [];
-        prisesPion.push(new Prise(ligne, colonne, Math.abs(this.grille[ligne][colonne]) === 2));
+        let prisesEnCours = [], prisesEtendues = [];
+        prisesEnCours.push(new Prise(ligne, colonne, Math.abs(this.grille[ligne][colonne]) === 2));
+        let i = 0;
         do {
-            prisesEnCours = [];
-            prisesPion.forEach(function (p) {
-                if (prisesEnCours.push(this.etendrePrise(p)))
-                    prisesEtendues.push(p);
-            });
-            prisesPion.filter(p => !prisesEtendues.some(p2 => p2 === p));
-        } while (prisesPion.length < prisesPion.push(prisesEnCours));
-        prisesPion.push(prisesEtendues);
-        prisesPion.forEach(p => {
-            if (p.nombrePionsPris() >= 1)
-                this.actionsPossibles.push(p)
-        });
-        prisesPion.pop();
+            let p = prisesEnCours.shift();
+            prisesEnCours.push(...this.etendrePrise(p));
+            console.log(this.etendrePrise(p));
+            prisesEtendues.push(p);
+        } while (i++ < 50 && prisesEnCours.length > 0);
+        prisesEtendues.shift();
+        this.actionsPossibles.push(...prisesEtendues);
     }
 
     etendrePrise(p) {
@@ -525,49 +530,39 @@ export class Damier {
                 let ligne = this.getLigneVoisine(ligneArrivee, position);
                 let col = this.getColonneVoisine(colArrivee, position);
                 if (this.peutEtendrePrise(p, position) && !p.pionVirtuellementPris(ligne, col))
-                    prises.push(Prise.Prise(p, this.getLigneVoisine(ligne, position), this.getColonneVoisine(col, position)));
+                    prises.push(Prise.prise(p, this.getLigneVoisine(ligne, position), this.getColonneVoisine(col, position)));
             }
         }
         return prises;
     }
 
-    /*    triePrisesDames() {
-            let l: Prise[] = [];
-            this.actionsPossibles.forEach(p => {
-                if ((<Prise>p).dame)
-                    l.push(<Prise>p)
-            });
-            l.forEach(p => {
-                l.slice().reverse().forEach(p2 => {
-                    if (p2===p)
-                        break;
-                    if (p.prendMemePionsDifferentOrdre(p2) && p.ligneDepart == p2.ligneDepart
-                        && p.colonneDepart == p2.colonneDepart)
-                        this.actionsPossibles.filter(p3 => p3!=p2);
+    /*        triePrisesDames() {
+                let l: Prise[] = [];
+                this.actionsPossibles.forEach(p => {
+                    if ((<Prise>p).dame)
+                        l.push(<Prise>p)
                 });
-            });
-        }*/
+                l.forEach(p => {
+                    l.slice().reverse().forEach(p2 => {
+                        if (p2===p)
+                            break;
+                        if (p.prendMemePionsDifferentOrdre(p2) && p.ligneDepart == p2.ligneDepart
+                            && p.colonneDepart == p2.colonneDepart)
+                            this.actionsPossibles.filter(p3 => p3!=p2);
+                    });
+                });
+            }*/
 
     caseOccupeeParAdversaire(pion, ligneCase, colCase) {
         let pionCase = this.grille[ligneCase][colCase];
         return (pion < 0 && pionCase > 0) || (pion > 0 && pionCase < 0);
     }
 
-    caseApresSautLibreOuContientPionPreneur(p, n) {
-        if (n.length === 3) {
-            let ligne = this.getLigneVoisine(n[0], n[2]), col = this.getColonneVoisine(n[1], n[2]);
-            if (ligne < 0 || ligne >= this.grille.length || col < 0 || col >= this.grille.length)
-                return false;
-            let pion = this.grille[ligne][col];
-            return pion === 0 || (ligne === p.ligneDepart && col === p.colonneDepart);
-        } else {
-            let l = this.getLigneVoisine(this.getLigneVoisine(p.ligneArrivee(), n[0]), n[0]),
-                c = this.getColonneVoisine(this.getColonneVoisine(p.colonneArrivee(), n[0]), n[0]);
-            if (l < 0 || l >= this.grille.length || c < 0 || c >= this.grille.length)
-                return false;
-            let pion = this.grille[l][c];
-            return pion === 0 || (l === p.ligneDepart && c === p.colonneDepart);
-        }
+    caseApresSautLibreOuContientPionPreneur(p, l, c, pos) {
+        const ligne = this.getLigneVoisine(l, pos), col = this.getColonneVoisine(c, pos);
+        if (ligne < 0 || ligne >= this.grille.length || col < 0 || col >= this.grille.length)
+            return false;
+        return this.grille[ligne][col] === 0 || (ligne === p.ligneDepart() && col === p.colonneDepart());
     }
 
     static casesSuivent(l1, c1, l2, c2, l3, c3) {
@@ -576,8 +571,8 @@ export class Damier {
     }
 
     peutEtendrePrise(p, positionCase) {
-        return this.contientPionAdverse(this.grille[p.ligneDepart][p.colonneDepart], p.ligneArrivee(), p.colonneArrivee(),
-            positionCase) && this.caseApresSautLibreOuContientPionPreneur(p, positionCase);
+        return this.contientPionAdverse(this.grille[p.ligneDepart()][p.colonneDepart()], p.ligneArrivee(), p.colonneArrivee(),
+            positionCase) && this.caseApresSautLibreOuContientPionPreneur(p, this.getLigneVoisine(p.ligneArrivee(), positionCase), this.getColonneVoisine(p.colonneArrivee(), positionCase), positionCase);
     }
 
     contientPionAdverse(pion, ligne, col, position) {

@@ -1,9 +1,10 @@
 "use strict";
-import {Damier} from "./Damier";
+import {Damier} from "./Damier.js";
 
 export class DamierGraphique extends Damier {
     constructor() {
         super();
+        this.addListeners();
     }
 
     addListeners() {

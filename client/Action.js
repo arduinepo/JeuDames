@@ -1,5 +1,5 @@
 "use strict";
-import {Damier} from "./Damier";
+import {Damier} from "./Damier.js";
 
 export class Case {
     constructor(l, c) {
@@ -30,10 +30,6 @@ export class Mouvement extends Action {
         this.caseArrivee = new Case(l2, c2);
     }
 
-    caseArrivee() {
-        return this.caseArrivee;
-    }
-
     ligneArrivee() {
         return this.caseArrivee.ligne;
     }
@@ -51,10 +47,15 @@ export class Prise extends Action {
         this.dame = dame;
     }
 
-    static Prise(p, l, c) {
+    static prise(p, l, c) {
         let prise = new Prise(p.caseDepart.ligne, p.caseDepart.colonne, p.dame);
+        prise.cases=p.cases.slice();
         prise.ajouteCase(l, c);
         return prise;
+    }
+
+    nombrePionsPris() {
+        return this.dame ? this.cases.length / 2 : this.cases.length;
     }
 
     ajouteCase(l, c) {
@@ -62,28 +63,28 @@ export class Prise extends Action {
     }
 
     caseArrivee() {
-        return this.cases[this.cases.length - 1];
+        return this.cases.length > 0 ? this.cases[this.cases.length - 1] : this.caseDepart;
     }
 
     ligneArrivee() {
-        return this.cases[this.cases.length - 1].ligne;
+        return this.caseArrivee().ligne;
     }
 
     colonneArrivee() {
-        return this.cases[this.cases.length - 1].colonne;
+        return this.caseArrivee().colonne;
     }
 
-    pionVirtuellementPris(casePion) {
-        if (this.cases.length == 0)
+    pionVirtuellementPris(l,c) {
+        if (this.cases.length === 0)
             return false;
         if (this.dame) {
             for (let i = 0; i < this.cases.length; i += 2)
-                if (casePion == this.cases[i])
+                if (l === this.cases[i].ligne && c===this.cases[i].colonne)
                     return true;
         } else {
             let caseDepart = this.caseDepart;
             for (let i = 0; i < this.cases.length; i++) {
-                if (Damier.casesSuivent(caseDepart.ligne, caseDepart.colonne, casePion.ligne, casePion.colonne, this.cases[i].ligne, this.cases[i].colonne))
+                if (Damier.casesSuivent(caseDepart.ligne, caseDepart.colonne, l, c, this.cases[i].ligne, this.cases[i].colonne))
                     return true;
                 caseDepart = this.cases[i];
             }

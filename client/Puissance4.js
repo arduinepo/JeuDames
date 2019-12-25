@@ -1,19 +1,18 @@
 "use strict";
 
-import {DamierGraphique} from "./DamierGraphique";
+import {DamierGraphique} from "./DamierGraphique.js";
+import {JoueurAutoAleatoire, JoueurHumain, JoueurAutomatiqueIntelligent} from './Joueurs.js';
 
-class Partie{
-    constructor(joueur1Humain, joueur2Humain, joueur2Aleatoire){
-        this.damier=new DamierGraphique();
+onload = function () {
+    const BLANC = true, NOIR = false;
+    const damier = new DamierGraphique();
+    let joueurCourant = BLANC;
+    let nombreToursSansPrise = 0;
 
-    }
-
-}
-
-class JoueurAutomatique{
-
-}
-
-class JoueurAutomatiqueIntelligent{
-
-}
+    document.getElementById("launch").onclick = function () {
+        // switch : contre IA, aléatoire ou intelligente ; contre humain
+        // préférence blancs ou noirs
+        const joueur1 = new JoueurHumain(Math.random() < 0.5 ? BLANC : NOIR,
+            document.getElementById("inputNomJoueur").value);
+    };
+};

@@ -49,7 +49,7 @@ export class Prise extends Action {
 
     static prise(p, l, c) {
         let prise = new Prise(p.caseDepart.ligne, p.caseDepart.colonne, p.dame);
-        prise.cases=p.cases.slice();
+        prise.cases = p.cases.slice();
         prise.ajouteCase(l, c);
         return prise;
     }
@@ -74,12 +74,12 @@ export class Prise extends Action {
         return this.caseArrivee().colonne;
     }
 
-    pionVirtuellementPris(l,c) {
+    pionVirtuellementPris(l, c) {
         if (this.cases.length === 0)
             return false;
         if (this.dame) {
             for (let i = 0; i < this.cases.length; i += 2)
-                if (l === this.cases[i].ligne && c===this.cases[i].colonne)
+                if (l === this.cases[i].ligne && c === this.cases[i].colonne)
                     return true;
         } else {
             let caseDepart = this.caseDepart;
@@ -90,6 +90,16 @@ export class Prise extends Action {
             }
         }
         return false;
+    }
+
+    prendMemePionsMemeOrdre(prise) {
+        if (this.caseDepart !== prise.caseDepart || this.cases.length !== prise.cases.length
+            || this.cases[this.cases.length - 1] !== prise.cases[prise.cases.length - 1])
+            return false;
+        let i = 0;
+        for (; i < this.cases.length && this.cases[i] !== prise.cases[j]; i += 2) {
+        }
+        return i === this.cases.length;
     }
 
 }

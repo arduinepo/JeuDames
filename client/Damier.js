@@ -1,5 +1,5 @@
 "use strict";
-import {Prise, Mouvement} from "./Action.js";
+import {Prise, Mouvement, Case} from "./Action.js";
 import {
     CASE_VIDE,
     PION_BLANC,
@@ -62,7 +62,37 @@ export class Damier {
     - renvoyer dernier mouvement
     */
 
-    pionAppartientAjoueur(ligne, colonne, joueurBlanc) {
+    prendre(l1, c1, l2, c2) {
+        this.deplacer1Case(l1, c1, l2, c2);
+        let l3,c3;
+        if (Math.abs(this.grille[l2][c2]) === 2) {
+            let pos = this.positionRelative(l1, c1, l2, c2);
+            l3 = this.getLigneVoisine(l1, pos), c3 = this.getColonneVoisine(c1, pos);
+            for (; !this.pionsAdverses(l2, c2, l3, c3); l3 = this.getLigneVoisine(l3, pos), c3 = this.getColonneVoisine(c3, pos)) {
+            }
+        } else
+            l3=l1 > l2 ? l1 - 1 : l1 + 1,c3=c1 > c2 ? c1 - 1 : c1 + 1;
+        switch (this.grille[l3][c3]) {
+            case (PION_BLANC):
+                this.nombrePionsBlancs--;
+                break;
+            case (DAME_BLANC):
+                this.nombreDamesBlancs--;
+                break;
+            case (PION_NOIR):
+                this.nombrePionsNoirs--;
+                break;
+            case (DAME_NOIR):
+                this.nombreDamesNoirs--;
+        }
+        this.grille[l3][c3] = CASE_VIDE;
+    }
+
+    pionsAdverses(l1, c1, l2, c2) {
+        return (this.grille[l1][c1] > 0 && this.grille[l2][c2] < 0) || (this.grille[l1][c1] < 0 && this.grille[l2][c2] > 0);
+    }
+
+    pionAppartientAJoueur(ligne, colonne, joueurBlanc) {
         return (joueurBlanc && this.grille[ligne][colonne] < 0) || (!joueurBlanc && this.grille[ligne][colonne] > 0);
     }
 
@@ -71,15 +101,15 @@ export class Damier {
         let l = this.getLigneVoisine(caseDepart.ligne, HAUT_GAUCHE),
             c = this.getColonneVoisine(caseDepart.colonne, HAUT_GAUCHE),
             pion = this.grille[caseDepart.ligne][caseDepart.colonne];
-        for (; l != caseArrivee.ligne && c != caseArrivee.colonne; l = this.getLigneVoisine(caseDepart.ligne, pos), c = this.getColonneVoisine(caseDepart.colonne, pos))
-            if (this.caseOccupeeParAdversaire(pion, caseArrivee.ligne, caseArrivee.colonne))
+        for (; l != caseArrivee.ligne && c != caseArrivee.colonne; l = this.getLigneVoisine(l, pos), c = this.getColonneVoisine(c, pos))
+            if (this.caseOccupeeParAdversaire(pion, l, c))
                 return true;
         return false;
     }
 
-    casesAccessiblesDepuis(caze) {
+    casesAccessiblesDepuis(l, c) {
         let cases = [];
-        let l = caze.ligne, c = caze.colonne;
+        /*let l = caze.ligne, c = caze.colonne;
         this.actionsPossibles.forEach((action) => {
             if (action.caseDepart === caze) {
                 if (action instanceof Mouvement)
@@ -90,119 +120,112 @@ export class Damier {
                     else cases.push(action.cases[0]);
                 }
             }
-        });
-        /*switch (this.grille[l][c]) {
+        });*/
+        switch (this.grille[l][c]) {
             case DAME_NOIR:
-                for (let pos = HAUT_GAUCHE; pos <= BAS_GAUCHE; pos++) {
-                    let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
-                    while (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9 && this.grille[l2][c2] === CASE_VIDE) {
-                        cases.push(new Case(l2, c2));
-                        l2 = this.getLigneVoisine(l2, pos);
-                        c2 = this.getColonneVoisine(c2, pos);
-                    }
-                    if (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9) {
-                        switch (this.grille[l2][c2]) {
-                            case PION_BLANC:
-                            case DAME_BLANC:
-                                l2 = this.getLigneVoisine(l2, pos);
-                                c2 = this.getColonneVoisine(c2, pos);
-                                while (this.grille[l2][c2] === CASE_VIDE) {
-                                    cases.push(new Case(l2, c2));
-                                    l2 = this.getLigneVoisine(l2, pos);
-                                    c2 = this.getColonneVoisine(c2, pos);
-                                }
-                                break;
-                        }
-                    }
-                }
-                break;
             case DAME_BLANC:
-                for (let pos = HAUT_GAUCHE; pos <= BAS_GAUCHE; pos++) {
-                    let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
-                    while (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9 && this.grille[l2][c2] === CASE_VIDE) {
-                        cases.push(new Case(l2, c2));
-                        l2 = this.getLigneVoisine(l2, pos);
-                        c2 = this.getColonneVoisine(c2, pos);
-                    }
-                    if (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9) {
-                        switch (this.grille[l2][c2]) {
-                            case PION_NOIR:
-                            case DAME_NOIR:
-                                l2 = this.getLigneVoisine(l2, pos);
-                                c2 = this.getColonneVoisine(c2, pos);
-                                while (this.grille[l2][c2] === CASE_VIDE) {
-                                    cases.push(new Case(l2, c2));
-                                    l2 = this.getLigneVoisine(l2, pos);
-                                    c2 = this.getColonneVoisine(c2, pos);
-                                }
-                                break;
-                        }
-                    }
-                }
+                cases.push(...this.casesAccessiblesDame(l, c));
                 break;
             case PION_NOIR:
-                for (let pos = BAS_DROIT; pos <= BAS_GAUCHE; pos++) {
-                    let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
-                    if (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9) {
-                        switch (this.grille[l2][c2]) {
-                            case CASE_VIDE:
-                                cases.push(new Case(l2, c2));
-                                break;
-                            case PION_BLANC:
-                            case DAME_BLANC:
-                                let l3 = this.getLigneVoisine(l2, pos), c3 = this.getColonneVoisine(c2, pos);
-                                if (this.grille[l3][c3] === CASE_VIDE)
-                                    cases.push(new Case(l3, c3));
-                        }
-                    }
-                }
-                break;
             case PION_BLANC:
-                for (let pos = HAUT_GAUCHE; pos <= HAUT_DROIT; pos++) {
-                    let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
-                    if (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9) {
-                        switch (this.grille[l2][c2]) {
-                            case CASE_VIDE:
-                                cases.push(new Case(l2, c2));
-                                break;
-                            case PION_NOIR:
-                            case DAME_NOIR:
-                                let l3 = this.getLigneVoisine(l2, pos), c3 = this.getColonneVoisine(c2, pos);
-                                if (this.grille[l3][c3] === CASE_VIDE)
-                                    cases.push(new Case(l3, c3));
-                        }
-                    }
-                }
-        }*/
+                cases.push(...this.casesAccessiblesPion(l, c));
+        }
         return cases;
     }
 
-    prendre1Pion(casePion, casePionAdverse) {
-        this.grille[casePionAdverse.ligne][casePionAdverse.colonne] = 0;
-        const pos = this.positionRelative(casePion, casePionAdverse);
-        this.grille[this.getLigneVoisine(casePionAdverse.ligne, pos)]
-            [this.getColonneVoisine(casePionAdverse.colonne, pos)] = this.grille[casePion.ligne][casePion.colonne];
-        this.grille[casePion.ligne][casePion.colonne] = 0;
-    }
-
-    deplacer1Case(casePion, caseArrivee) {
-        if ((casePion === PION_BLANC && caseArrivee.ligne === 0)) {
-            this.grille[caseArrivee.ligne][caseArrivee.colonne] = DAME_BLANC;
-        } else if (casePion === PION_NOIR && caseArrivee.ligne === this.grille.length - 1) {
-            this.grille[caseArrivee.ligne][caseArrivee.colonne] = DAME_NOIR;
-        } else {
-            this.grille[caseArrivee.ligne][caseArrivee.colonne] = this.grille[casePion.ligne][casePion.colonne];
+    casesAccessiblesPion(l, c) {
+        let cases = [];
+        const couleur = this.grille[l][c] < 0;
+        for (let pos = couleur ? HAUT_GAUCHE : BAS_DROIT; pos <= couleur ? HAUT_DROIT : BAS_GAUCHE; pos++) {
+            let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
+            if (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9 && this.grille[l2][c2] === CASE_VIDE)
+                cases.push(new Case(l2, c2));
         }
-        this.grille[casePion.ligne][casePion.colonne] = 0;
+        for (let pos = HAUT_GAUCHE; pos <= BAS_GAUCHE; pos++) {
+            let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
+            if (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9) {
+                switch (this.grille[l2][c2]) {
+                    case PION_BLANC:
+                    case DAME_BLANC:
+                        if (!couleur) {
+                            let l3 = this.getLigneVoisine(l2, pos), c3 = this.getColonneVoisine(c2, pos);
+                            if (this.grille[l3][c3] === CASE_VIDE)
+                                cases.push(new Case(l3, c3));
+                        }
+                        break;
+                    case PION_NOIR:
+                    case DAME_NOIR:
+                        if (couleur) {
+                            let l3 = this.getLigneVoisine(l2, pos), c3 = this.getColonneVoisine(c2, pos);
+                            if (this.grille[l3][c3] === CASE_VIDE)
+                                cases.push(new Case(l3, c3));
+                        }
+                }
+            }
+        }
+        return cases;
     }
 
-    positionRelative(case1, case2) {
-        if (case2.ligne - case1.ligne <= HAUT) {
-            if (case2.colonne - case2.colonne <= GAUCHE) {
+    casesAccessiblesDame(l, c) {
+        let cases = [];
+        for (let pos = HAUT_GAUCHE; pos <= BAS_GAUCHE; pos++) {
+            let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
+            while (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9 && this.grille[l2][c2] === CASE_VIDE) {
+                cases.push(new Case(l2, c2));
+                l2 = this.getLigneVoisine(l2, pos);
+                c2 = this.getColonneVoisine(c2, pos);
+            }
+            if (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9) {
+                switch (this.grille[l][c]) {
+                    case DAME_NOIR:
+                        switch (this.grille[l2][c2]) {
+                            case PION_BLANC:
+                            case DAME_BLANC:
+                                cases.push(...this.casesVidesApresPriseDame(l2, c2, pos));
+                        }
+                        break;
+                    case DAME_BLANC:
+                        switch (this.grille[l2][c2]) {
+                            case PION_NOIR:
+                            case DAME_NOIR:
+                                cases.push(...this.casesVidesApresPriseDame(l2, c2, pos));
+                        }
+                        break;
+                }
+            }
+        }
+        return cases;
+    }
+
+    casesVidesApresPriseDame(l, c, pos) {
+        let cases = [];
+        let l2 = this.getLigneVoisine(l2, pos), c2 = this.getColonneVoisine(c2, pos);
+        while (this.grille[l2][c2] === CASE_VIDE) {
+            cases.push(new Case(l2, c2));
+            l2 = this.getLigneVoisine(l2, pos);
+            c2 = this.getColonneVoisine(c2, pos);
+        }
+        return cases;
+    }
+
+    deplacer1Case(l1, c1, l2, c2) {
+        if ((this.grille[l1][c1] === PION_BLANC && l2 === 0)) {
+            this.grille[l2][c2] = DAME_BLANC;
+        } else if (this.grille[l1][c1] === PION_NOIR && l2 === this.grille.length - 1) {
+            this.grille[l2][c2] = DAME_NOIR;
+        } else {
+            this.grille[l2][c2] = this.grille[l1][c1];
+        }
+        this.grille[l1][c1] = CASE_VIDE;
+    }
+
+    positionRelative(l1, c1, l2, c2) {
+        if (l2 - l1 <= HAUT) {
+            if (c2 - c1 <= GAUCHE) {
                 return HAUT_GAUCHE;
             } else return HAUT_DROIT;
         } else {
-            if (case2.colonne - case2.colonne <= GAUCHE) {
+            if (c2 - c1 <= GAUCHE) {
                 return BAS_GAUCHE;
             } else return BAS_DROIT;
         }
@@ -329,7 +352,6 @@ export class Damier {
                     if (l2 >= 0 && l2 < this.grille.length && c2 >= 0 && c2 < this.grille.length && this.grille[l2][c2] === 0)
                         return true;
                 }
-                break;
         }
         return false;
     }
@@ -355,7 +377,6 @@ export class Damier {
                         break;
                     case (DAME_NOIR):
                         this.nombreDamesNoirs--;
-                        break;
                 }
                 this.grille[c.ligne][c.colonne] = 0;
             }
@@ -379,7 +400,6 @@ export class Damier {
                         break;
                     case (DAME_NOIR):
                         this.nombreDamesNoirs--;
-                        break;
                 }
                 this.grille[lignePion][colPion] = 0;
                 casePrec = c;
@@ -407,7 +427,7 @@ export class Damier {
     * parcourt les cases voisines immédiates des pions simples, et les cases situées sur les diagonales des dames.
     */
     mouvementsPossibles() {
-        if (this.tourBlanc===BLANC) {
+        if (this.tourBlanc === BLANC) {
             for (let i = 0; i < this.grille.length; i++)
                 for (let j = (i % 2 === 0) ? 0 : 1; j < this.grille.length; j = j + 2)
                     if (this.grille[i][j] === PION_BLANC)
@@ -471,7 +491,7 @@ export class Damier {
 
     /* Génère toutes les prises possibles de tous les pions du joueur qui a le tour. */
     prises() {
-        if (this.tourBlanc===BLANC) {
+        if (this.tourBlanc === BLANC) {
             for (let i = 0; i < this.grille.length; i++)
                 for (let j = (i % 2 === 0) ? 0 : 1; j < this.grille.length; j = j + 2)
                     if (this.grille[i][j] === PION_BLANC || this.grille[i][j] === DAME_BLANC)
@@ -481,20 +501,18 @@ export class Damier {
                 for (let j = (i % 2 === 0) ? 0 : 1; j < this.grille.length; j = j + 2)
                     if (this.grille[i][j] === PION_NOIR || this.grille[i][j] === DAME_NOIR)
                         this.prisesPion(i, j);
-        // this.triePrisesDames();
+        this.triePrisesDames();
     }
 
     /* Génère toutes les prises possibles d'un pion. */
     prisesPion(ligne, colonne) {
         let prisesEnCours = [], prisesEtendues = [];
         prisesEnCours.push(new Prise(ligne, colonne, Math.abs(this.grille[ligne][colonne]) === 2));
-        let i = 0;
         do {
             let p = prisesEnCours.shift();
             prisesEnCours.push(...this.etendrePrise(p));
-            console.log(this.etendrePrise(p));
             prisesEtendues.push(p);
-        } while (i++ < 50 && prisesEnCours.length > 0);
+        } while (prisesEnCours.length > 0);
         prisesEtendues.shift();
         this.actionsPossibles.push(...prisesEtendues);
     }
@@ -536,22 +554,20 @@ export class Damier {
         return prises;
     }
 
-    /*        triePrisesDames() {
-                let l: Prise[] = [];
-                this.actionsPossibles.forEach(p => {
-                    if ((<Prise>p).dame)
-                        l.push(<Prise>p)
-                });
-                l.forEach(p => {
-                    l.slice().reverse().forEach(p2 => {
-                        if (p2===p)
-                            break;
-                        if (p.prendMemePionsDifferentOrdre(p2) && p.ligneDepart == p2.ligneDepart
-                            && p.colonneDepart == p2.colonneDepart)
-                            this.actionsPossibles.filter(p3 => p3!=p2);
-                    });
-                });
-            }*/
+    triePrisesDames() {
+        let prises = [];
+        this.actionsPossibles.forEach(p => {
+            if (p.dame)
+                prises.push(p)
+        });
+        for (let i = 0; i < prises.length; i++) {
+            for (let j = prises.length - 1; j >i; j--) {
+                let p1 = prises[i], p2 = prises[j];
+                if (p1.prendMemePionsMemeOrdre(p2))
+                    this.actionsPossibles.filter(p3 => p3 != p2);
+            }
+        }
+    }
 
     caseOccupeeParAdversaire(pion, ligneCase, colCase) {
         let pionCase = this.grille[ligneCase][colCase];

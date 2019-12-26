@@ -1,2 +1,6 @@
+plugins/*
+hooks/*
+platforms/*
+www/*
 node_modules/*
 !/node_modules/UserManagement

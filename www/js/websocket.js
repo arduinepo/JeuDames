@@ -23,29 +23,34 @@ function surrender()
     socket.emit('surrender');
 }
 
-// Client side event listener.  It takes new messages from the server and appends it to HTML.  
+function searchGame(){
+    socket.emit("searchGame");
+}
+
+/*------------------------ Client side event listener. -----------------------*/  
+
+// It takes new messages from the server and appends it to HTML.  
 socket.on('receiveMessage',function(msg){
     console.log('receiveMessage -- client side', msg);
     writeToScreen(msg);
 });
-// Client side event listener.  Affichage victoire.  
+
+// Affichage victoire.  
 socket.on('receiveEndGame',function(stateWin){
    
     console.log('EndGame receive-- client side');
     stateWin ? writeToScreen("Victoire") : writeToScreen("Défaite");
 });
 
-// Client side event listener.  Reception de son pseudo 
+// Reception changement de pseudo 
 socket.on('receivePseudo',function(pseudo){
     console.log('receivePseudo -- client side', pseudo);
     writeToScreen(pseudo);
 });
 
-function searchGame(){
-    socket.emit("searchGame");
-}
 
-// Ecrit à l'écran
+/*---------------- Style -------------------------*/
+
 function writeToScreen(message)
 {
     var pre = document.createElement("p");
@@ -53,5 +58,3 @@ function writeToScreen(message)
     pre.innerHTML = message;
     output.appendChild(pre);
 }
-
-//window.addEventListener("load", init, false);

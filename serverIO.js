@@ -5,7 +5,6 @@ var io = require('socket.io')(server);            //http server passed to socket
 var userManagement = require('./node_modules/UserManagement/index'); 
 
 
-
 io.on('connection', function(socket){
   
   // Ajout le socket à la liste des clients actuellement connectés 
@@ -19,8 +18,9 @@ io.on('connection', function(socket){
     // TODO : save game state, emit un message à l'adversaire, et event de forfait
   });
 
+
   // Reception event de forfait
-  io.on('opponentLeave', function(){
+  socket.on('opponentLeave', function(){
     // TODO : Verification que l'adversaire est bien déconnecté
     if ( verifyopponentDisconnect() ){// TODO : L'adversaire ne s'est pas reconnecté
       surrenderOpponent(); // TODO : event victoire et save défaite pour adversaire

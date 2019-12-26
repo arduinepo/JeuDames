@@ -1,6 +1,5 @@
 /plugins/*
 /hooks/*
 /platforms/*
-/www/*
 /node_modules/*
-!/node_modules/UserManagement
+!/node_modules/UserManagement/*

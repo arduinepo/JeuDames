@@ -39,8 +39,8 @@
 
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="#">About</a>
-            <a href="#">Services</a>
+            <a href="#">Jouer</a>
+            <a href="#open-modal-login">Pseudo</a>
             <a href="#">Clients</a>
             <a href="#">Contact</a>
         </div> 
@@ -48,16 +48,39 @@
         
         <ul class="nav">
             <li><span class="icon-home" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span></li>
-            <li><a href="">Jouer</a></li>
+
             <li class="sidenav_right">
                 <a href="#">Paramètre</a>
-                <a href="#">Connection</a>
             </li> 
         </ul>
        
 
-        <h2>WebSocket Test</h2> 
-
+        <ul class="list-button">
+            <li><a href="#open-modal-play">Jouer</a></li>
+            <li><a href="#open-modal-play">Jouer contre l'ordinateur</a></li>
+        </ul>
+    
+    
+        <div id="open-modal-login" class="modal-window">
+            <div class="window">
+                <a href="#" title="Close" class="modal-close">Close</a>
+                <h1>Connection</h1>
+                <form action="">
+                    <input type="text" class="" placeholder="pseudo"/>
+                    <input type="text" class="" placeholder="mot de passe"/>
+                </form>
+                <button class="sucess">Envoyer</button>
+    
+                <div>Votre pseudo est : </div>
+            </div>
+        </div>
+    
+        <div id="open-modal-play" class="modal-window">
+            <div class="window">
+                <a href="#" title="Close" class="modal-close">Close</a>
+                <div>Votre pseudo est : </div>
+            </div>
+        </div>
         <section>
             <p>Message: </p>
             <input id ="message" type="text">

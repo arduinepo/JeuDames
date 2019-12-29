@@ -46,6 +46,11 @@ io.on('connection', function(socket){
     io.emit('receiveMessage', msg);
   });
   
+  socket.on('classement', function(){
+    console.log("recit d'une deamnde de classement");
+    getclassement(socket);
+  });
+
   // Lancement de la Game
   socket.on('searchGame', function(){
     addToWaitingFile(socket);

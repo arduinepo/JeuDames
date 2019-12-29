@@ -22,38 +22,55 @@
     position: fixed;
     right: 10px;
 }
+.icon{
+    font-size: 0.5em;
+}
+.pseudo{
+    color: #f1f1f1;
+    margin-left:30px;
+    text-decoration: none;
+    font-size: 1.8em;
+
+}
+
 .nav{
     list-style:none;
     margin:0;
     padding:0;
     text-align:center;
-    padding-bottom: 30px;
+    
 }
 .nav li{
     display:inline;
 }
 .nav a{
     display:inline-block;
-    padding:10px;
+
 }
-.sidenav a,p{
-    padding: 8px 8px 8px 32px;
+.close{
+    color: #f1f1f1; 
+    text-decoration: none;
+}
+.sidenav .item,p{
+
     text-decoration: none;
     font-size: 25px;
     color: #818181;
     display: block;
-    transition: 0.3s;
+    transition: 0.3s;  
+    margin-top:15px;  
+    margin-left:30px;
 }
 input {
-text-align: center;
-background-color: #ECF0F1;
-border: 2px solid transparent;
-border-radius: 3px;
-font-size: 16px;
-font-weight: 200;
-padding: 10px 0;
-width: 250px;
-transition: border .5s;
+    text-align: center;
+    background-color: #ECF0F1;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    font-size: 16px;
+    font-weight: 200;
+    padding: 10px 0;
+    width: 250px;
+    transition: border .5s;
 }
 .sidenav a:hover {
     color: #f1f1f1;
@@ -61,6 +78,8 @@ transition: border .5s;
 
 .sidenav .closebtn {
     position: absolute;
+    color: #ECF0F1;
+    text-decoration: none;
     top: 0;
     right: 25px;
     font-size: 36px;

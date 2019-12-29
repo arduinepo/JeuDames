@@ -27,6 +27,12 @@ function searchGame(){
     socket.emit("searchGame");
 }
 
+function classement(){
+    console.log("Demande de classement");
+    socket.emit("classement");
+}
+
+
 /*------------------------ Client side event listener. -----------------------*/  
 
 // It takes new messages from the server and appends it to HTML.  
@@ -45,7 +51,20 @@ socket.on('receiveEndGame',function(stateWin){
 // Reception changement de pseudo 
 socket.on('receivePseudo',function(pseudo){
     console.log('receivePseudo -- client side', pseudo);
+    document.querySelector('.pseudo').textContent = pseudo;
     writeToScreen(pseudo);
+});
+
+// Reception du Classement
+socket.on('receiveClassement',function(clients){
+    let obj = JSON.parse(clients);
+    console.log("On recoit :"+clients[0]);
+    console.log("On recoit :"+obj[0]);
+    let i = 0;
+    obj.forEach(element => {
+        writeToScreen(element);
+    });
+
 });
 
 

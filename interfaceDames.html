@@ -1,0 +1,529 @@
+<html>
+    <head>
+
+        <style>
+            @import url('https://fonts.googleapis.com/css?family=Abel&display=swap');
+
+            #Damier {
+                display: none;
+            }
+
+            #boutons, #ChoixPartie {
+                margin-left: 40%;
+                margin-top: 20%;
+
+            }
+
+            #ConnexionButton, #InscriptionButton, #PartieReseau, #PartieLocale {
+                margin-top: 10px;
+                background-color: rgb(32, 32, 32);
+                color: white;
+                width: 30%;
+                height: 5%;
+                border-radius: 10px;
+                border-color: rgb(32, 32, 32);
+                font-family: 'Abel', sans-serif;
+                font-size: 18px;
+                height: 5%;
+                width: 30%;
+                box-shadow: 5px 5px 5px rgb(65, 65, 65);
+                
+            }
+
+            #Connexion, #Inscription {
+                margin-left: 40%;
+                margin-top: 15%;
+                border-style: solid;
+                border-color: rgb(32, 32, 32);
+                width: 20%;
+                border-radius: 15%;
+                background-color: rgb(32, 32, 32);
+                box-shadow: 5px 5px 5px rgb(65, 65, 65);
+            }
+
+            h1 {
+                color: white;
+                margin-left: 15%;
+                font-family: 'Abel', sans-serif;
+                
+            }
+
+            form {
+                margin-left: 10%;
+            }
+
+            #lesInputs {
+                border-radius: 4px;
+                height: 6%;
+                width: 90%;
+                font-family: 'Abel', sans-serif;
+                font-size: 16px;
+                padding-left: 5px;
+                margin-top: 5px;
+            }
+
+            #bouton {
+                background: linear-gradient(grey,white);
+                border-color: grey;
+                border-radius: 4px;
+                height: 5%;
+                width: 60%;
+                font-family: 'Abel', sans-serif;
+                font-size: 18px;
+                margin-left: 15%;
+                margin-top: 7%;
+            }
+
+
+        </style>
+
+    </head>
+    <body>
+
+        <div id="boutons">
+            <button id="ConnexionButton" onclick="connexionForm()">Connexion</button></br>
+            <button id="InscriptionButton" onclick="inscriptionForm()">Inscription</button>
+        </div>
+
+
+
+        <script>
+            
+            function connexionForm() {
+
+                //Création d'un div général :
+                var laConnexion = document.createElement("div");
+                laConnexion.setAttribute('id',"Connexion");
+                
+                //Création du form :
+                var f = document.createElement("form");
+                f.setAttribute('method',"post");
+                f.setAttribute('action', "");
+                var titreCo = document.createElement("h1");
+                titreCo.innerHTML = "CONNEXION";
+                f.appendChild(titreCo);
+
+                laConnexion.appendChild(f);
+
+                //Création  des différents input :
+                var iPseudo = document.createElement("input");
+                iPseudo.setAttribute('type',"text");
+                iPseudo.setAttribute('placeholder',"Pseudo");
+                iPseudo.setAttribute('id',"lesInputs");
+
+                var iMdp = document.createElement("input");
+                iMdp.setAttribute('type',"text");
+                iMdp.setAttribute('placeholder',"Mot de passe");
+                iMdp.setAttribute('id',"lesInputs");
+                
+                var iConnexion = document.createElement("input");
+                iConnexion.setAttribute('type',"submit");
+                iConnexion.setAttribute('value',"Se connecter");
+                iConnexion.setAttribute('id',"bouton");
+                iConnexion.setAttribute('onclick', "choixPartie()");
+
+                //Ajout des différents éléments enfants aux éléments parents :                
+                f.appendChild(iPseudo);
+                f.appendChild(iMdp);
+                f.appendChild(iConnexion);
+
+                document.getElementsByTagName('body')[0].appendChild(laConnexion);
+
+                document.getElementById('boutons').style.display = "none";
+
+            }
+
+            function inscriptionForm() {
+                
+                //Création d'un div général :
+                var Inscription = document.createElement("div");
+                Inscription.setAttribute('id',"Inscription");
+                
+                //Création du form :
+                var f = document.createElement("form");
+                f.setAttribute('method',"post");
+                f.setAttribute('action',"");
+                var titreCo = document.createElement("h1");
+                titreCo.innerHTML = "INSCRIPTION";
+                f.appendChild(titreCo);
+
+                Inscription.appendChild(f);
+               
+
+                //Création  des différents input :
+                var iPseudo = document.createElement("input");
+                iPseudo.setAttribute('type',"text");
+                iPseudo.setAttribute('placeholder',"Pseudo");
+                iPseudo.setAttribute('id',"lesInputs");
+
+                var iMdp = document.createElement("input");
+                iMdp.setAttribute('type',"text");
+                iMdp.setAttribute('placeholder',"Mot de passe");
+                iMdp.setAttribute('id',"lesInputs");
+
+                var iInscription = document.createElement("input");
+                iInscription.setAttribute('type',"submit");
+                iInscription.setAttribute('value',"S'inscrire");
+                iInscription.setAttribute('id', "bouton");
+                iInscription.setAttribute("onclick", "choixPartie()");
+                
+                //Ajout des différents éléments enfants aux éléments parents :                 
+                f.appendChild(iPseudo);
+                f.appendChild(iMdp);
+                f.appendChild(iInscription);
+
+                document.getElementsByTagName('body')[0].appendChild(Inscription);
+
+                document.getElementById('boutons').style.display = "none";
+                
+            }
+
+            function choixPartie() {
+
+                //Création d'un div général pour les boutons :
+                var ChoixPartie = document.createElement("div");
+                ChoixPartie.setAttribute('id',"ChoixPartie");
+                
+                //Création du bouton Partie Réseau :
+                var partieR = document.createElement("button");
+                partieR.setAttribute('id', "PartieReseau");
+                partieR.innerHTML = "Jouer avec un humain";
+
+                //Création du bouton Partie Locale :
+                var partieL = document.createElement("button");
+                partieL.setAttribute('id', "PartieLocale");
+                partieL.innerHTML = "Jouer avec un robot débile"
+
+                var saut = document.createElement("br");
+
+                //Ajout des différents éléments enfants aux éléments parents :
+                ChoixPartie.appendChild(partieR);
+                ChoixPartie.appendChild(saut);
+                ChoixPartie.appendChild(partieL);
+                document.getElementsByTagName('body')[0].appendChild(ChoixPartie);
+
+                //On enlève le formulaire : 
+                var connexion = document.getElementById("Connexion");
+                var inscription = document.getElementById("Inscription");
+                if (connexion != null) {          
+                    connexion.remove();
+                }
+                else {
+                    inscription.remove();
+                }
+
+            }
+
+        </script>
+
+        <div id="Damier">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 770.91 642.59">
+                    
+                    <defs>
+
+                        <style>
+
+                            svg {
+                                position: absolute;
+                            }
+
+                            .not-playable {
+                                fill:#c3996b;
+
+                            }
+                            .not-playable,.playable {
+                                stroke:#231f20;
+                                stroke-miterlimit:10;
+                            }
+                            .playable {
+                                fill:#3b2314;
+                            }
+
+                            .pionB {
+                                fill:white;
+                            }
+
+                            .pionN {
+                                fill: black;
+                            }
+
+                        </style>
+
+                    </defs>
+
+                    <!-- Ligne 1 -->
+                    <g id="0">
+                        <rect class="playable" id="0" x="210" y="0.5" width="35" height="35"/>
+                            <circle class="pionB" id="0" cx="227.5" cy="18" r="11"/>
+
+                        <rect class="not-playable" x="245" y="0.5" width="35" height="35"/>
+
+                        <rect class="playable" id="2" x="280" y="0.5" width="35" height="35"/>
+                            <circle class="pionB" id="2" cx="297.5" cy="18" r="11"/>
+
+                        <rect class="not-playable"  x="315" y="0.5" width="35" height="35"/>
+
+                        <rect class="playable" id="4" x="350" y="0.5" width="35" height="35"/>
+                            <circle class="pionB" id="4" cx="367.5" cy="18" r="11"/>
+
+                        <rect class="not-playable" x="385" y="0.5" width="35" height="35"/>
+
+                        <rect class="playable" id="6" x="420" y="0.5" width="35" height="35"/>
+                            <circle class="pionB" id="6" cx="437.5" cy="18" r="11"/>
+
+                        <rect class="not-playable" x="455" y="0.5" width="35" height="35"/>
+
+                        <rect class="playable" id="8" x="490" y="0.5" width="35" height="35"/>
+                            <circle class="pionB" id="8" cx="507.5" cy="18" r="11"/>
+
+                        <rect class="not-playable" x="525" y="0.5" width="35" height="35"/>
+                    </g>
+
+                    <!-- Ligne 2 -->
+                    <g id="1">
+                        <rect class="not-playable" x="210" y="35.5" width="35" height="35"/>
+                        
+                        <rect class="playable" id="1" x="245" y="35.5" width="35" height="35"/>
+                            <circle class="pionB" id="1" cx="262.5" cy="53" r="11"/>
+
+                        <rect class="not-playable" x="280" y="35.5" width="35" height="35"/>
+
+                        <rect class="playable" id="3" x="315" y="35.5" width="35" height="35"/>
+                            <circle class="pionB" id="3" cx="332.5" cy="53" r="11"/>
+
+                        <rect class="not-playable" x="350" y="35.5" width="35" height="35"/>
+
+                        <rect class="playable" id="5" x="385" y="35.5" width="35" height="35"/>
+                            <circle class="pionB" id="5" cx="402.5" cy="53" r="11"/>
+                        
+                        <rect class="not-playable" x="420" y="35.5" width="35" height="35"/>
+
+                        <rect class="playable" id="7" x="455" y="35.5" width="35" height="35"/>
+                            <circle class="pionB" id="7" cx="472.5" cy="53" r="11"/>
+                        
+                        <rect class="not-playable" x="490" y="35.5" width="35" height="35"/>
+
+                        <rect class="playable" id="9" x="525" y="35.5" width="35" height="35"/>
+                            <circle class="pionB" id="9" cx="542.5" cy="53" r="11"/>
+                    </g>
+
+                        <!-- Ligne 3 -->
+                    <g id="2">
+                        <rect class="playable" id="0" x="210" y="70.5" width="35" height="35"/>
+                            <circle class="pionB" id="0" cx="227.5" cy="88" r="11"/>
+
+                        <rect class="not-playable" x="245" y="70.5" width="35" height="35"/>
+
+                        <rect class="playable" id="2" x="280" y="70.5" width="35" height="35"/>
+                            <circle class="pionB" id="2" cx="297.5" cy="88" r="11"/>
+
+                        <rect class="not-playable" x="315" y="70.5" width="35" height="35"/>
+
+                        <rect class="playable" id="4" x="350" y="70.5" width="35" height="35"/>
+                            <circle class="pionB" id="4" cx="367.5" cy="88" r="11"/>
+
+                        <rect class="not-playable" x="385" y="70.5" width="35" height="35"/>
+
+                        <rect class="playable" id="6" x="420" y="70.5" width="35" height="35"/>
+                            <circle class="pionB" id="6" cx="437.5" cy="88" r="11"/>
+
+                        <rect class="not-playable" x="455" y="70.5" width="35" height="35"/>
+
+                        <rect class="playable" id="8" x="490" y="70.5" width="35" height="35"/>
+                            <circle class="pionB" id="8" cx="507.5" cy="88" r="11"/>
+
+                        <rect class="not-playable" x="525" y="70.5" width="35" height="35"/>
+                    </g>    
+
+
+                    <!-- Ligne 4 -->
+                    <g id="3">
+                        <rect class="not-playable" x="210" y="105.5" width="35" height="35"/>
+
+                        <rect class="playable" id="1" x="245" y="105.5" width="35" height="35"/>
+                            <circle class="pionB" id="1" cx="262.5" cy="123" r="11"/>
+
+                        <rect class="not-playable" x="280" y="105.5" width="35" height="35"/>
+
+                        <rect class="playable" id="3" x="315" y="105.5" width="35" height="35"/>
+                            <circle class="pionB" id="3" cx="332.5" cy="123" r="11"/>
+
+                        <rect class="not-playable" x="350" y="105.5" width="35" height="35"/>
+
+                        <rect class="playable" id="5" x="385" y="105.5" width="35" height="35"/>
+                            <circle class="pionB" id="5" cx="402.5" cy="123" r="11"/>
+
+                        <rect class="not-playable" x="420" y="105.5" width="35" height="35"/>
+
+                        <rect class="playable" id="7" x="455" y="105.5" width="35" height="35"/>  
+                            <circle class="pionB" id="7" cx="472.5" cy="123" r="11"/>
+                        
+                        <rect class="not-playable" x="490" y="105.5" width="35" height="35"/>
+
+                        <rect class="playable" id="9" x="525" y="105.5" width="35" height="35"/>
+                            <circle class="pionB" id="9" cx="543" cy="123" r="11"/>
+                    </g>
+
+                    <!-- Ligne 5 -->
+                    <g id="4">
+                        <rect class="playable" id="0" x="210" y="140.5" width="35" height="35"/>
+
+                        <rect class="not-playable" x="245" y="140.5" width="35" height="35"/>
+
+                        <rect class="playable" id="2" x="280" y="140.5" width="35" height="35"/>
+
+                        <rect class="not-playable" x="315" y="140.5" width="35" height="35"/>
+
+                        <rect class="playable" id="4" x="350" y="140.5" width="35" height="35"/>
+
+                        <rect class="not-playable" x="385" y="140.5" width="35" height="35"/>
+
+                        <rect class="playable" id="6" x="420" y="140.5" width="35" height="35"/>
+
+                        <rect class="not-playable" x="455" y="140.5" width="35" height="35"/>
+
+                        <rect class="playable" id="8" x="490" y="140.5" width="35" height="35"/>
+
+                        <rect class="not-playable" x="525" y="140.5" width="35" height="35"/>   
+                    </g>
+
+
+                    <!-- Ligne  6-->
+                    <g id="5">
+                        <rect class="not-playable" x="210" y="175.5" width="35" height="35"/>
+
+                        <rect class="playable" id="1" x="245" y="175.5" width="35" height="35"/>
+
+                        <rect class="not-playable" x="280" y="175.5" width="35" height="35"/>
+
+                        <rect class="playable" id="3" x="315" y="175.5" width="35" height="35"/>
+
+                        <rect class="not-playable" x="350" y="175.5" width="35" height="35"/>
+
+                        <rect class="playable" id="5" x="385" y="175.5" width="35" height="35"/>
+
+                        <rect class="not-playable" x="420" y="175.5" width="35" height="35"/>
+
+                        <rect class="playable" id="7" x="455" y="175.5" width="35" height="35"/>
+
+                        <rect class="not-playable" x="490" y="175.5" width="35" height="35"/>
+
+                        <rect class="playable" id="9" x="525" y="175.5" width="35" height="35"/>
+                    </g>
+
+                    <!-- Ligne 7 -->
+                    <g id="6">
+                        <rect class="playable" id="0" x="210" y="210.5" width="35" height="35"/>
+                            <circle class="pionN" id="0" cx="227.5" cy="228" r="11"/>
+
+                        <rect class="not-playable" x="245" y="210.5" width="35" height="35"/>
+
+                        <rect class="playable" id="2" x="280" y="210.5" width="35" height="35"/>
+                            <circle class="pionN" id="2" cx="297.5" cy="228" r="11"/>
+
+                        <rect class="not-playable" x="315" y="210.5" width="35" height="35"/>
+
+                        <rect class="playable" id="4" x="350" y="210.5" width="35" height="35"/>
+                            <circle class="pionN" id="4" cx="367.5" cy="228" r="11"/>
+                        
+                        <rect class="not-playable" x="385" y="210.5" width="35" height="35"/>
+
+                        <rect class="playable" id="6" x="420" y="210.5" width="35" height="35"/>
+                            <circle class="pionN" id="6" cx="437.5" cy="228" r="11"/>
+
+                        <rect class="not-playable" x="455" y="210.5" width="35" height="35"/>
+
+                        <rect class="playable" id="8" x="490" y="210.5" width="35" height="35"/>
+                            <circle class="pionN" id="8" cx="507.5" cy="228" r="11"/>
+
+                        <rect class="not-playable" x="525" y="210.5" width="35" height="35"/>
+                    </g>
+
+                    <!-- Ligne 8 -->
+                    <g id="7">
+                        <rect class="not-playable" x="210" y="245.5" width="35" height="35"/>
+
+                        <rect class="playable" id="1" x="245" y="245.5" width="35" height="35"/>
+                            <circle class="pionN" id="1" cx="262.5" cy="263" r="11"/>
+
+                        <rect class="not-playable" x="280" y="245.5" width="35" height="35"/>
+
+                        <rect class="playable" id="3" x="315" y="245.5" width="35" height="35"/>
+                            <circle class="pionN" id="3" cx="332.5" cy="263" r="11"/>
+
+                        <rect class="not-playable" x="350" y="245.5" width="35" height="35"/>
+
+                        <rect class="playable" id="5" x="385" y="245.5" width="35" height="35"/>
+                            <circle class="pionN" id="5" cx="402.5" cy="263" r="11"/>
+
+                        <rect class="not-playable" x="420" y="245.5" width="35" height="35"/>
+
+                        <rect class="playable" id="7" x="455" y="245.5" width="35" height="35"/>
+                            <circle class="pionN" id="7" cx="472.5" cy="263" r="11"/>
+                            
+                        <rect class="not-playable" x="490" y="245.5" width="35" height="35"/>
+
+                        <rect class="playable" id="9" x="525" y="245.5" width="35" height="35"/>
+                            <circle class="pionN" id="9" cx="543" cy="263" r="11"/>
+                    </g>
+
+                    <!-- Ligne 9 -->
+                    <g id="8">
+                        <rect class="playable" id="0" x="210" y="280.5" width="35" height="35"/>
+                            <circle class="pionN" id="0" cx="227.5" cy="298" r="11"/>
+
+                        <rect class="not-playable" x="245" y="280.5" width="35" height="35"/>
+
+                        <rect class="playable" id="2" x="280" y="280.5" width="35" height="35"/>
+                            <circle class="pionN" id="2" cx="297.5" cy="298" r="11"/>
+
+                        <rect class="not-playable" x="315" y="280.5" width="35" height="35"/>
+
+                        <rect class="playable" id="4" x="350" y="280.5" width="35" height="35"/>
+                            <circle class="pionN" id="4" cx="367.5" cy="298" r="11"/>
+
+                        <rect class="not-playable" x="385" y="280.5" width="35" height="35"/>
+                        
+                        <rect class="playable" id="6" x="420" y="280.5" width="35" height="35"/>
+                            <circle class="pionN" id="6" cx="437.5" cy="298" r="11"/>
+
+                        <rect class="not-playable" x="455" y="280.5" width="35" height="35"/>
+
+                        <rect class="playable" id="8" x="490" y="280.5" width="35" height="35"/>
+                            <circle class="pionN" id="8" cx="507.5" cy="298" r="11"/>
+
+                        <rect class="not-playable" x="525" y="280.5" width="35" height="35"/>
+                    </g>
+
+                    <!-- Ligne 10 -->
+                    <g id="9">
+                        <rect class="not-playable" x="210" y="315.5" width="35" height="35"/>
+
+                        <rect class="playable" id="1" x="245" y="315.5" width="35" height="35"/>
+                            <circle class="pionN" id="1" cx="262.5" cy="333" r="11"/>
+                        
+                        <rect class="not-playable" x="280" y="315.5" width="35" height="35"/>
+                        
+                        <rect class="playable" id="3" x="315" y="315.5" width="35" height="35"/>
+                            <circle class="pionN" id="3" cx="332.5" cy="333" r="11"/>
+                        
+                        <rect class="not-playable" x="350" y="315.5" width="35" height="35"/>
+                        
+                        <rect class="playable" id="5" x="385" y="315.5" width="35" height="35"/>
+                            <circle class="pionN" id="5" cx="402.5" cy="333" r="11"/>
+                        
+                        <rect class="not-playable" x="420" y="315.5" width="35" height="35"/>
+                        
+                        <rect class="playable" id="7" x="455" y="315.5" width="35" height="35"/>
+                            <circle class="pionN" id="7" cx="472.5" cy="333" r="11"/>
+                                    
+                        <rect class="not-playable" x="490" y="315.5" width="35" height="35"/>
+                        
+                        <rect class="playable" id="9" x="525" y="315.5" width="35" height="35"/>
+                            <circle class="pionN" id="9" cx="543" cy="333" r="11"/>
+                    </g>
+
+            </svg>
+        </div>
+    </body>
+</html>

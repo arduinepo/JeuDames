@@ -3,3 +3,6 @@
 /plugins/*
 /node_modules/*
 !/node_modules/UserManagement     
+/.idea/
+/client/test.html
+/client/main.js

@@ -212,3 +212,38 @@ input {
     border-color: #357ebd;  border: 1px solid transparent;
     border-radius:7px;
 }
+table {
+ 
+    color: #fff;
+    text-align: left;
+    width: 100%;
+
+	border-collapse: collapse;
+	overflow: hidden;
+	box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+th,td {
+    padding: 15px;
+    color: rgb(90, 83, 83);
+}
+
+th{
+    color: #fff;
+    background-color:rgb(90, 83, 83);
+}
+th:first-child{
+    text-align: left;
+    
+    width: 20px;
+    background-color:rgb(90, 83, 83);
+}
+td:first-child{
+    text-align: left;width: 20px;
+  
+}
+.containerTable {
+
+    width: 100vh;
+}
+

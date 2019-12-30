@@ -2,4 +2,4 @@
 /platforms/*
 /plugins/*
 /node_modules/*
-!/node_modules/UserManagement
+!/node_modules/UserManagement     

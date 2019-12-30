@@ -74,4 +74,4 @@ io.on('connection', function(socket){
 
 });
 
-server.listen(8100);
+server.listen(8000,'10.188.92.235');

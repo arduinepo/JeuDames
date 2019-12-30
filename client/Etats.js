@@ -52,8 +52,6 @@ class EtatMin extends Etat {
                     return this.valeur;
                 if (beta > this.valeur)
                     beta = this.valeur;
-                if (alpha >= beta)
-                    return this.valeur;
             }
             return this.valeur;
         }
@@ -79,8 +77,6 @@ class EtatMax extends Etat {
                     return this.valeur;
                 if (alpha < this.valeur)
                     alpha = this.valeur;
-                if (alpha >= beta)
-                    return this.valeur;
             }
             return this.valeur;
         }

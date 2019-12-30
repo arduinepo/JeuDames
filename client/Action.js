@@ -7,6 +7,10 @@ export class Case {
         this.colonne = c;
     }
 
+    equals(c) {
+        return this.ligne === c.ligne && this.colonne === c.colonne;
+    }
+
 }
 
 class Action {
@@ -93,11 +97,11 @@ export class Prise extends Action {
     }
 
     prendMemePionsMemeOrdre(prise) {
-        if (this.caseDepart !== prise.caseDepart || this.cases.length !== prise.cases.length
-            || this.cases[this.cases.length - 1] !== prise.cases[prise.cases.length - 1])
+        if (!this.caseDepart.equals(prise.caseDepart) || this.cases.length !== prise.cases.length
+            || !this.cases[this.cases.length - 1].equals(prise.cases[prise.cases.length - 1]))
             return false;
         let i = 0;
-        for (; i < this.cases.length && this.cases[i] !== prise.cases[j]; i += 2) {
+        for (; i < this.cases.length && this.cases[i].equals(prise.cases[i]); i += 2) {
         }
         return i === this.cases.length;
     }

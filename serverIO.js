@@ -47,7 +47,7 @@ io.on('connection', function(socket){
   });
   
   socket.on('classement', function(){
-    console.log("recit d'une deamnde de classement");
+    console.log("recoit d'une demande de classement");
     getclassement(socket);
   });
 

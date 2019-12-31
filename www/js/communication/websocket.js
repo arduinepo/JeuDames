@@ -127,8 +127,6 @@ socket.on('receiveClassement',function(clients){
 
 });
 
-
-
 /*---------------- Style -------------------------*/
 
 function writeToScreen(message)

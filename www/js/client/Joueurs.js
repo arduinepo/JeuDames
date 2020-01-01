@@ -1,9 +1,9 @@
 "use strict";
 
-import {EtatRacine} from "./Etats.js";
+import {Etat} from "./Etats.js";
 import {PION_BLANC, PION_NOIR, BLANC, NOIR} from './Constantes.js';
 
-const VALEUR_DAME = 15, VALEUR_PION = 5;
+const VALEUR_DAME = 54, VALEUR_PION = 27;
 
 class Joueur {
     constructor(joueurBlanc) {
@@ -35,15 +35,14 @@ export class JoueurHumain extends Joueur {
 }
 
 export class JoueurAutomatiqueIntelligent extends JoueurAutomatique {
-    constructor(joueurBlanc) {
+    constructor(joueurBlanc, profondeur) {
         super(joueurBlanc);
+        this.profondeur=profondeur;
         this.heuristique = joueurBlanc ? new HeuristiqueBlancs() : new HeuristiqueNoirs();
     }
 
     choisirAction(damier) {
-        this.arbreRecherche = new EtatRacine(damier);
-        this.arbreRecherche.rechercheMeilleurCoup(6, this.heuristique);
-        return this.arbreRecherche.rechercheMeilleurCoup(6, this.heuristique);
+        return new Etat(damier,this.heuristique).rechercheMeilleurCoup(this.profondeur, this.heuristique);
     }
 
 }
@@ -55,16 +54,16 @@ class HeuristiqueBlancs {
             for (let j = (i % 2 === 0) ? 0 : 1; j < etat.grille.length; j += 2)
                 switch (etat.grille[i][j]) {
                     case PION_BLANC:
-                        total = total + (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
+                        total += (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
                         break;
                     case PION_NOIR:
-                        total = total - (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
+                        total -= (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
                 }
         return total + (etat.nombreDamesBlancs - etat.nombreDamesNoirs) * VALEUR_DAME;
     }
 
-    gagne(etat) {
-        return etat.joueurAGagne(BLANC);
+    gagne(etat,actions) {
+        return etat.joueurAGagne(BLANC,actions);
     }
 }
 
@@ -75,15 +74,15 @@ class HeuristiqueNoirs {
             for (let j = (i % 2 === 0) ? 0 : 1; j < etat.grille.length; j += 2)
                 switch (etat.grille[i][j]) {
                     case PION_BLANC:
-                        total = total - (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
+                        total -= (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
                         break;
                     case PION_NOIR:
-                        total = total + (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
+                        total += (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
                 }
         return total + (etat.nombreDamesNoirs - etat.nombreDamesBlancs) * VALEUR_DAME;
     }
 
-    gagne(etat) {
-        return etat.joueurAGagne(NOIR);
+    gagne(etat,actions) {
+        return etat.joueurAGagne(NOIR,actions);
     }
 }

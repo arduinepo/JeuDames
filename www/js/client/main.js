@@ -1,21 +1,25 @@
 import {Damier} from './Damier.js';
 import {Prise} from "./Action.js";
+import {JoueurAutomatiqueIntelligent} from "./Joueurs.js";
 
 let d=new Damier();
 d.grille=[
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+    [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+    [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, -2, 0, 0, 0, 0, 0, 0, 0, 0],
+    [-1, 0, -1, 0, -1, 0, -1, 0, -1, 0],
+    [0, -1, 0, -1, 0, -1, 0, -1, 0, -1],
+    [-1, 0, -1, 0, -1, 0, -1, 0, -1, 0],
+    [0, -1, 0, -1, 0, -1, 0, -1, 0, -1]
 ];
-d.genereActionsPossibles();
-console.log(d.actionsPossibles);
+let j=new JoueurAutomatiqueIntelligent(true, 10);
+j.choisirAction(d);
+
+
+
 //let c=d.casesAccessiblesDepuis(4,4);
 //c.forEach(i=>console.log(i.ligne,i.colonne, d.pionAdverseEntreCases(4,4,i.ligne,i.colonne)));
 

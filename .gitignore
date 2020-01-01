@@ -1,8 +1,9 @@
 /hooks/*
 /platforms/*
 /plugins/*
-/node_modules/*
-!/node_modules/UserManagement     
-/.idea/
+/Server/node_modules/*
+/Client/node_modules/*
+!/Server/node_modules/UserManagement     
+/.idea/*
 /client/test.html
 /client/main.js

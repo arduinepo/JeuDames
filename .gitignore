@@ -7,3 +7,5 @@
 /.idea/*
 /client/test.html
 /client/main.js
+/Client/platforms/*
+/Client/pasckage.json

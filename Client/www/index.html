@@ -24,6 +24,7 @@
             <a class="item" href="#">autresActions</a>
         </div> 
         
+ 
         <nav class="slidemenu">
   
             <!-- Item 1 -->
@@ -49,11 +50,27 @@
         </nav>
 
         <div id="slide_1" class="div-slide div-slide_1">
-                 
-            <section class="action">
-                <ul class="list-button">
-                    <li><a href="#open-modal-play">Jouer</a></li>
 
+            <section class="action">
+                <div class="popup">
+                    <span class="popuptext" id="myPopup"></span>
+                </div>
+
+                <ul class="list-button">
+                    <li onclick="searchGame()"><a href="#open-modal-play">Jouer</a></li>
+                </ul>
+                <h1>TEST : </h1>
+                <ul class="list-button">
+                    <li onclick="searchGame()"><a>Victoire</a></li>
+                </ul>
+                <ul class="list-button">
+                    <li onclick="searchGame()"><a>Défaite</a></li>
+                </ul>
+                <ul class="list-button">
+                    <li onclick="searchGame()"><a>Se rendre</a></li>
+                </ul>
+                <ul class="list-button">
+                    <li onclick="searchGame()"><a>Déplacer</a></li>
                 </ul>
             </section>
             
@@ -98,7 +115,8 @@
             </div>
         </div>
 
+        <!-- TODO: Regrouper-->
         <script src="js/socket.io.js"></script>
         <script type="text/javascript" src="js/communication/websocket.js"></script>
-        <script type="text/javascript" src="js/communication/test/side-menu.js"></script>
+        <script type="text/javascript" src="js/ihm/side-menu.js"></script>
 </html>

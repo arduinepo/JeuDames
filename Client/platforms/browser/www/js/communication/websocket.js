@@ -127,6 +127,11 @@ socket.on('receiveClassement',function(clients){
 
 });
 
+// Connection aux server
+socket.on('receiveAlert',function(msg){
+    console.log(msg);
+    notification(msg);
+});
 /*---------------- Style -------------------------*/
 
 function writeToScreen(message)

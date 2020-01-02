@@ -30,3 +30,11 @@ function showDivPuzzle() {
   document.getElementById("slide_2").style.zIndex = "0";
   document.getElementById("slide_1").style.zIndex = "0";
 }
+
+function notification(text) {
+  var popup = document.querySelector("#myPopup");
+  popup.innerText = text;
+  popup.classList.toggle("show");
+  setTimeout(function(){ popup.classList.remove("show"); }, 2000);
+  
+}

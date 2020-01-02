@@ -41,6 +41,7 @@ body{
     display: none;
 }
 .slidemenu{
+    z-index: 15;
     font-family: arial, sans-serif;
     max-width: 600px;
     margin: 50px auto;
@@ -298,4 +299,42 @@ td:first-child{
 .containerTable {
     width: 100vh;
 }
+/* Popup container - can be anything you want */
+.popup {
+    position: relative;
+    transition: 0.5s;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* The actual popup */
+  .popup .popuptext {   
+    z-index: 20;
+    visibility: hidden;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    top: 14%;
+    padding: 8px 0;
+    position: fixed;
+    width: 100%;
+  }
+  
 
+  /* Toggle this class - hide and show the popup */
+.popup .show {
+    z-index: 20;
+    animation: fadeIn 2s;
+}
+
+  
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+    0%   {opacity: 0;visibility: visible;}
+    50%  {opacity: 1;}
+    100% {opacity: 0;visibility: hidden;}
+}
+  

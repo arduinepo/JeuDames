@@ -61,6 +61,7 @@ class EtatMin extends Etat {
         if (valeurFils < this.valeur)
             this.valeur = valeurFils;
     }
+
 }
 
 class EtatMax extends Etat {
@@ -86,4 +87,5 @@ class EtatMax extends Etat {
         if (valeurFils > this.valeur)
             this.valeur = valeurFils;
     }
+
 }

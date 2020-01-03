@@ -39,23 +39,6 @@ export class Damier {
         }
     }
 
-    /*
-    partie, joueurs, IA,
-
-    clic premiere case :
-     si voisine et vide : si deplacement possible, deplacer;FIN
-     si arrivee derriere pion adverse :
-     demande si prise possible, si oui prend ; si prise encore possible depuis case courante, continue;
-     si voisine et adversaire : si 1 case vide à l'arrivee, prend; si dame et plusieurs case vides, RIEN
-
-     si accessible :
-     - si arrivee apres pris :
-     - sinon
-
-    - renvoyer cases accessibles depuis position initiale, depuis position courant après première prise
-    - renvoyer dernier mouvement
-    */
-
     /* Déplace le pion situé en l1-c1, sur la case l2-c2, et prend le pion adverse situé entre ces deux cases en passant. */
     prendre1Pion(l1, c1, l2, c2) {
         this.deplacer1Case(l1, c1, l2, c2);
@@ -122,6 +105,12 @@ export class Damier {
                 break;
         }
         return cases;
+    }
+
+    estAccessible(l, c, cases) {
+        cases.forEach((caze) => {
+            if (caze.ligne === l && caze.colonne === c) return true;});
+        return false;
     }
 
     /* Promeut le pion situé en l-c en dame. */
@@ -321,18 +310,6 @@ export class Damier {
         this.mouvementsPossibles();
     }
 
-    prisePossible() {
-        return this.actionsPossibles.length > 0 && this.actionsPossibles[0] instanceof Prise;
-    }
-
-    prisePossibleDepuis(l, c) {
-        this.actionsPossibles.forEach(p => {
-            if (p instanceof Prise && l === p.ligneDepart && c === p.colonneDepart)
-                return true;
-        });
-        return false;
-    }
-
     /* Réalise l'action a, et promeut le pion en dame si nécessaire. Bascule le tour des joueurs.*/
     realiserAction(a) {
         let promotion;
@@ -351,33 +328,6 @@ export class Damier {
         this.grille[m.ligneDepart()][m.colonneDepart()] = 0;
         return (m.ligneArrivee() === this.grille.length - 1 && this.grille[m.ligneArrivee()][m.colonneArrivee()] === 1)
             || (m.ligneArrivee() === 0 && this.grille[m.ligneArrivee()][m.colonneArrivee()] === -1);
-    }
-
-    deplacementPossibleDepuis(l, c) {
-        switch (this.grille[l][c]) {
-            case (PION_NOIR):
-                for (let pos = BAS_DROIT; pos <= BAS_GAUCHE; pos++) {
-                    let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
-                    if (l2 >= 0 && l2 < this.grille.length && c2 >= 0 && c2 < this.grille.length && this.grille[l2][c2] === 0)
-                        return true;
-                }
-                break;
-            case (PION_BLANC):
-                for (let pos = HAUT_GAUCHE; pos <= HAUT_DROIT; pos++) {
-                    let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
-                    if (l2 >= 0 && l2 < this.grille.length && c2 >= 0 && c2 < this.grille.length && this.grille[l2][c2] === 0)
-                        return true;
-                }
-                break;
-            case (DAME_NOIR):
-            case (DAME_BLANC):
-                for (let pos = HAUT_GAUCHE; pos <= BAS_GAUCHE; pos++) {
-                    let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
-                    if (l2 >= 0 && l2 < this.grille.length && c2 >= 0 && c2 < this.grille.length && this.grille[l2][c2] === 0)
-                        return true;
-                }
-        }
-        return false;
     }
 
     distancePionLigneFondAdverse(i, j) {

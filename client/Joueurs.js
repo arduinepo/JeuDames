@@ -3,7 +3,7 @@
 import {EtatRacine} from "./Etats.js";
 import {PION_BLANC, PION_NOIR, BLANC, NOIR} from './Constantes.js';
 
-const VALEUR_DAME = 15, VALEUR_PION = 5;
+const VALEUR_DAME = 3, VALEUR_PION = 1;
 
 class Joueur {
     constructor(joueurBlanc) {
@@ -27,40 +27,34 @@ export class JoueurAutoAleatoire extends JoueurAutomatique {
     }
 }
 
-export class JoueurHumain extends Joueur {
-    constructor(joueurBlanc, nom) {
-        super(joueurBlanc);
-        this.nom = nom;
-    }
-}
-
 export class JoueurAutomatiqueIntelligent extends JoueurAutomatique {
-    constructor(joueurBlanc) {
+    constructor(joueurBlanc, profondeur) {
         super(joueurBlanc);
+        this.profondeur=profondeur;
         this.heuristique = joueurBlanc ? new HeuristiqueBlancs() : new HeuristiqueNoirs();
     }
 
     choisirAction(damier) {
         this.arbreRecherche = new EtatRacine(damier);
-        this.arbreRecherche.rechercheMeilleurCoup(6, this.heuristique);
-        return this.arbreRecherche.rechercheMeilleurCoup(6, this.heuristique);
+        this.arbreRecherche.rechercheMeilleurCoup(this.profondeur, this.heuristique);
+        return this.arbreRecherche.rechercheMeilleurCoup(this.profondeur, this.heuristique);
     }
 
 }
 
 class HeuristiqueBlancs {
     evalue(etat) {
-        let total = 0;
+        /*let total = 0;
         for (let i = 0; i < etat.grille.length; i++)
             for (let j = (i % 2 === 0) ? 0 : 1; j < etat.grille.length; j += 2)
                 switch (etat.grille[i][j]) {
                     case PION_BLANC:
-                        total = total + (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
+                        total += (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
                         break;
                     case PION_NOIR:
-                        total = total - (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
-                }
-        return total + (etat.nombreDamesBlancs - etat.nombreDamesNoirs) * VALEUR_DAME;
+                        total -= (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
+                }*/
+        return etat.nombrePionsBlancs - etat.nombrePionsNoirs + (etat.nombreDamesBlancs - etat.nombreDamesNoirs) * VALEUR_DAME;
     }
 
     gagne(etat) {
@@ -70,17 +64,17 @@ class HeuristiqueBlancs {
 
 class HeuristiqueNoirs {
     evalue(etat) {
-        let total = 0;
+        /*let total = 0;
         for (let i = 0; i < etat.grille.length; i++)
             for (let j = (i % 2 === 0) ? 0 : 1; j < etat.grille.length; j += 2)
                 switch (etat.grille[i][j]) {
                     case PION_BLANC:
-                        total = total - (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
+                        total -= (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
                         break;
                     case PION_NOIR:
-                        total = total + (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
-                }
-        return total + (etat.nombreDamesNoirs - etat.nombreDamesBlancs) * VALEUR_DAME;
+                        total += (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
+                }*/
+        return etat.nombrePionsNoirs - etat.nombrePionsBlancs + (etat.nombreDamesNoirs - etat.nombreDamesBlancs) * VALEUR_DAME;
     }
 
     gagne(etat) {

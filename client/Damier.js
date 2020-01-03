@@ -107,10 +107,36 @@ export class Damier {
         return cases;
     }
 
+    casesAccessiblesPourPriseDepuis(l, c) {
+        let cases = [];
+        switch (this.grille[l][c]) {
+            case DAME_NOIR:
+            case DAME_BLANC:
+                cases.push(...this.casesAccessiblesPriseDame(l, c));
+                break;
+            case PION_NOIR:
+            case PION_BLANC:
+                cases.push(...this.casesAccessiblesPrisePion(l, c));
+                break;
+        }
+        return cases;
+    }
+
     estAccessible(l, c, cases) {
         cases.forEach((caze) => {
-            if (caze.ligne === l && caze.colonne === c) return true;});
+            if (caze.ligne === l && caze.colonne === c) return true;
+        });
         return false;
+    }
+
+    casePionPris(l1, c1, l2, c2) {
+        let pos=this.positionRelative(l1,c1,l2,c2),pion=this.grille[l1][c1];
+        while(l1>=0&&l1<10&&c1>=0&&c1<10){
+            l1=this.getLigneVoisine(l1,pos);
+            c1=this.getColonneVoisine(c1,pos);
+            if(this.caseOccupeeParAdversaire(pion,l1,c1))
+                return new Case(l1,c1);
+        }
     }
 
     /* Promeut le pion situé en l-c en dame. */
@@ -190,6 +216,67 @@ export class Damier {
             let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
             while (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9 && this.grille[l2][c2] === CASE_VIDE) {
                 cases.push(new Case(l2, c2));
+                l2 = this.getLigneVoisine(l2, pos);
+                c2 = this.getColonneVoisine(c2, pos);
+            }
+            if (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9) {
+                switch (this.grille[l][c]) {
+                    case DAME_NOIR:
+                        switch (this.grille[l2][c2]) {
+                            case PION_BLANC:
+                            case DAME_BLANC:
+                                cases.push(...this.casesVidesApresPriseDame(l2, c2, pos));
+                        }
+                        break;
+                    case DAME_BLANC:
+                        switch (this.grille[l2][c2]) {
+                            case PION_NOIR:
+                            case DAME_NOIR:
+                                cases.push(...this.casesVidesApresPriseDame(l2, c2, pos));
+                        }
+                        break;
+                }
+            }
+        }
+        return cases;
+    }
+
+    /* Renvoie les cases accessibles par le pion situé en l-c. */
+    casesAccessiblesPrisePion(l, c) {
+        let cases = [];
+        const couleur = this.grille[l][c] < 0;
+        for (let pos = HAUT_GAUCHE; pos <= BAS_GAUCHE; pos++) {
+            let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
+            if (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9) {
+                switch (this.grille[l2][c2]) {
+                    case PION_BLANC:
+                    case DAME_BLANC:
+                        if (!couleur) {
+                            let l3 = this.getLigneVoisine(l2, pos), c3 = this.getColonneVoisine(c2, pos);
+                            if (this.grille[l3][c3] === CASE_VIDE)
+                                cases.push(new Case(l3, c3));
+                        }
+                        break;
+                    case PION_NOIR:
+                    case DAME_NOIR:
+                        if (couleur) {
+                            let l3 = this.getLigneVoisine(l2, pos), c3 = this.getColonneVoisine(c2, pos);
+                            if (this.grille[l3][c3] === CASE_VIDE)
+                                cases.push(new Case(l3, c3));
+                        }
+                        break;
+                }
+            }
+        }
+        return cases;
+    }
+
+    /* Renvoie les cases accessibles par la dame située en l-c.*/
+    casesAccessiblesPriseDame(l, c) {
+        let cases = [];
+        for (let pos = HAUT_GAUCHE; pos <= BAS_GAUCHE; pos++) {
+            let l2 = this.getLigneVoisine(l, pos), c2 = this.getColonneVoisine(c, pos);
+            while (l2 >= 0 && l2 <= 9 && c2 >= 0 && c2 <= 9 && this.grille[l2][c2] === CASE_VIDE) {
                 l2 = this.getLigneVoisine(l2, pos);
                 c2 = this.getColonneVoisine(c2, pos);
             }

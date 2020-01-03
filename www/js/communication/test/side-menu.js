@@ -30,3 +30,5 @@ function showDivPuzzle() {
   document.getElementById("slide_2").style.zIndex = "0";
   document.getElementById("slide_1").style.zIndex = "0";
 }
+
+

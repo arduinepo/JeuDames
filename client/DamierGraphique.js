@@ -93,22 +93,14 @@ export class Jeu {
                                         }
                                     }
                                 }
-
-
-
-
-
-
                                 jeu.actionAdverse(jeu.damier);
                             } else {
                                 action = new Mouvement(ligne1, colonne1, ligne2, colonne2);
                                 jeu.deplacer1Case(ligne1, colonne1, ligne2, colonne2);
-
-
-
-
-
                             }
+                            //ICI ENVOYER ACTION EFFECTUEE AU SERVEUR SI PARTIE VS HUMAIN
+                            //////////////////////////////////////////////////////
+                            //************************************************
                         }
 
                     }

@@ -1,6 +1,6 @@
 "use strict";
 
-import {EtatRacine} from "./Etats.js";
+import {Etat} from "./Etats.js";
 import {PION_BLANC, PION_NOIR, BLANC, NOIR} from './Constantes.js';
 
 const VALEUR_DAME = 3, VALEUR_PION = 1;
@@ -27,6 +27,13 @@ export class JoueurAutoAleatoire extends JoueurAutomatique {
     }
 }
 
+export class JoueurHumain extends Joueur {
+    constructor(joueurBlanc, nom) {
+        super(joueurBlanc);
+        this.nom = nom;
+    }
+}
+
 export class JoueurAutomatiqueIntelligent extends JoueurAutomatique {
     constructor(joueurBlanc, profondeur) {
         super(joueurBlanc);
@@ -35,9 +42,7 @@ export class JoueurAutomatiqueIntelligent extends JoueurAutomatique {
     }
 
     choisirAction(damier) {
-        this.arbreRecherche = new EtatRacine(damier);
-        this.arbreRecherche.rechercheMeilleurCoup(this.profondeur, this.heuristique);
-        return this.arbreRecherche.rechercheMeilleurCoup(this.profondeur, this.heuristique);
+        return new Etat(damier,this.heuristique).rechercheMeilleurCoup(this.profondeur, this.heuristique);
     }
 
 }
@@ -54,11 +59,11 @@ class HeuristiqueBlancs {
                     case PION_NOIR:
                         total -= (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
                 }*/
-        return etat.nombrePionsBlancs - etat.nombrePionsNoirs + (etat.nombreDamesBlancs - etat.nombreDamesNoirs) * VALEUR_DAME;
+        return etat.nombrePionsBlancs - etat.nombrePionsNoirs (etat.nombreDamesNoirs - etat.nombreDamesBlancs) * VALEUR_DAME;
     }
 
-    gagne(etat) {
-        return etat.joueurAGagne(BLANC);
+    gagne(etat,actions) {
+        return etat.joueurAGagne(BLANC,actions);
     }
 }
 
@@ -74,10 +79,10 @@ class HeuristiqueNoirs {
                     case PION_NOIR:
                         total += (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
                 }*/
-        return etat.nombrePionsNoirs - etat.nombrePionsBlancs + (etat.nombreDamesNoirs - etat.nombreDamesBlancs) * VALEUR_DAME;
+        return etat.nombrePionsNoirs - etat.nombrePionsBlancs (etat.nombreDamesNoirs - etat.nombreDamesBlancs) * VALEUR_DAME;
     }
 
-    gagne(etat) {
-        return etat.joueurAGagne(NOIR);
+    gagne(etat,actions) {
+        return etat.joueurAGagne(NOIR,actions);
     }
 }

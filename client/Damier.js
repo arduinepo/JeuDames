@@ -64,12 +64,14 @@ export class Damier {
                 this.nombreDamesNoirs--;
         }
         this.grille[l3][c3] = CASE_VIDE;
+        this.tourBlanc=!this.tourBlanc;
     }
 
     /* Déplace le pion situé en l1-c1 sur la case l2-c2, et le promeut en dame si l2 est la ligne de fond adverse du pion déplacé. */
     deplacer1Case(l1, c1, l2, c2) {
         this.grille[l2][c2] = this.grille[l1][c1];
         this.grille[l1][c1] = CASE_VIDE;
+        this.tourBlanc=!this.tourBlanc;
     }
 
     /* Renvoie les cases accessibles par le pion, simple ou dame, situé en l-c. */
@@ -104,19 +106,16 @@ export class Damier {
     }
 
     estAccessible(l, c, cases) {
-        cases.forEach((caze) => {
-            if (caze.ligne === l && caze.colonne === c) return true;
-        });
-        return false;
+        return cases.some(caze => caze.ligne === l && caze.colonne === c);
     }
 
     casePionPris(l1, c1, l2, c2) {
-        let pos=this.positionRelative(l1,c1,l2,c2),pion=this.grille[l1][c1];
-        while(l1>=0&&l1<10&&c1>=0&&c1<10){
-            l1=this.getLigneVoisine(l1,pos);
-            c1=this.getColonneVoisine(c1,pos);
-            if(this.caseOccupeeParAdversaire(pion,l1,c1))
-                return new Case(l1,c1);
+        let pos = this.positionRelative(l1, c1, l2, c2), pion = this.grille[l1][c1];
+        while (l1 >= 0 && l1 < 10 && c1 >= 0 && c1 < 10) {
+            l1 = this.getLigneVoisine(l1, pos);
+            c1 = this.getColonneVoisine(c1, pos);
+            if (this.caseOccupeeParAdversaire(pion, l1, c1))
+                return new Case(l1, c1);
         }
     }
 
@@ -365,7 +364,7 @@ export class Damier {
             || (this.actionsPossibles != null && this.actionsPossibles.length === 0);
     }
 
-    joueurAGagne(joueurBlanc,actions) {
+    joueurAGagne(joueurBlanc, actions) {
         return (joueurBlanc ? (this.nombrePionsNoirs === 0 && this.nombreDamesNoirs === 0)
             : (this.nombrePionsBlancs === 0 && this.nombreDamesBlancs === 0))
             || (joueurBlanc !== this.tourBlanc && actions.length === 0);
@@ -376,8 +375,8 @@ export class Damier {
         this.actionsPossibles = this.renvoitActionsPossibles();
     }
 
-    renvoitActionsPossibles(){
-        let as=this.prises().slice();
+    renvoitActionsPossibles() {
+        let as = this.prises().slice();
         as.push(...this.mouvementsPossibles());
         return as;
     }
@@ -595,7 +594,7 @@ export class Damier {
     }
 
     /* Supprime les prises "doublons" : les prises du même pion preneur, prenant les mêmes pions adverses dans le même ordre, se terminant sur la même case, et caractérisées par des cases étapes/intermédiaires différentes. */
-    triePrisesDames() {
+    triePrisesDames(prises) {
         let prises2 = [];
         for (let i = 0; i < this.prises.length; i++) {
             let p1 = this.prises[i];

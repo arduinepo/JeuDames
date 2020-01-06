@@ -108,7 +108,6 @@ export class Etat extends Damier {
                 this.meilleuresActions.push(actionCourante);
             if (alpha < this.valeur)
                 alpha = this.valeur;
-            console.log(this.valeur);
         }
         return this.meilleuresActions[Math.floor(Math.random() * this.meilleuresActions.length)];
     }

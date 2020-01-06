@@ -21,6 +21,18 @@ export class Jeu {
 
     deplacer1Case(l1, c1, l2, c2) {
         this.damier.deplacer1Case(l1, c1, l2, c2);
+        var ligneD = document.getElementsByTagName('g').item(l1);
+        var jetonD = ligneD.querySelector('circle#' + CSS.escape(c1));
+        var ligneA = document.getElementsByTagName('g').item(l2); // Ligne d'arrivée
+        var caseA = ligneA.querySelector('rect#' + CSS.escape(c2)); // Case d'arrivée
+        var cx = parseInt(caseA.getAttribute('x')) + 17.5; // Nouvelle position x du jeton
+        var cy = parseInt(caseA.getAttribute('y')) + 17.5; // Nouvelle position y du jeton
+        caseA.after(jetonD); // Insertion du jeton juste après la case d'arrivée dans le svg
+        jetonD.setAttribute('id', c2);
+        jetonD.setAttribute('cx', cx.toString());
+        jetonD.setAttribute('cy', cy.toString());
+        console.log("up graph");
+
 
     }
 
@@ -35,17 +47,31 @@ export class Jeu {
         }
     }
 
+    enleverSurlignement(cases) {
+        for (var i = 0; i < cases.length; i++) {
+            var laLigne = document.getElementsByTagName('g').item(cases[i].ligne).children;
+            for (var j = 0; j < laLigne.length; j++) {
+                if (parseInt(laLigne.item(j).getAttribute("id")) === cases[i].colonne) {
+                    laLigne.item(j).style.fill = "#3b2314";
+                }
+            }
+        }
+    }
+
     actionAdverse(damier) {
         let action;
         if (this.ia !== undefined) {
             action = this.ia.choisirAction(damier);
+            console.log(action);
             this.damier.realiserAction(action);
         }
         this.updateGraphique(action);
+        this.damier.tourBlanc=!this.damier.tourBlanc;
     }
 
     updateGraphique(action) {
         let pion = this.damier.grille[action.ligneDepart()][action.colonneDepart()];
+        console.log(pion);
         if (action instanceof Mouvement) {
 
         }
@@ -93,15 +119,25 @@ export class Jeu {
                                         }
                                     }
                                 }
-                                jeu.actionAdverse(jeu.damier);
+
+
+
+
+
+
+
                             } else {
-                                action = new Mouvement(ligne1, colonne1, ligne2, colonne2);
+                                jeu.enleverSurlignement(cases);
                                 jeu.deplacer1Case(ligne1, colonne1, ligne2, colonne2);
+
+
+
+
+
                             }
-                            //ICI ENVOYER ACTION EFFECTUEE AU SERVEUR SI PARTIE VS HUMAIN
-                            //////////////////////////////////////////////////////
-                            //************************************************
                         }
+                        console.log("poupou");
+                        jeu.actionAdverse(jeu.damier);
 
                     }
 

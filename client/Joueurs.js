@@ -59,7 +59,7 @@ class HeuristiqueBlancs {
                     case PION_NOIR:
                         total -= (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
                 }*/
-        return etat.nombrePionsBlancs - etat.nombrePionsNoirs (etat.nombreDamesNoirs - etat.nombreDamesBlancs) * VALEUR_DAME;
+        return etat.nombrePionsBlancs - etat.nombrePionsNoirs +(etat.nombreDamesNoirs - etat.nombreDamesBlancs) * VALEUR_DAME;
     }
 
     gagne(etat,actions) {
@@ -79,7 +79,7 @@ class HeuristiqueNoirs {
                     case PION_NOIR:
                         total += (VALEUR_PION - etat.distancePionLigneFondAdverse(i, j));
                 }*/
-        return etat.nombrePionsNoirs - etat.nombrePionsBlancs (etat.nombreDamesNoirs - etat.nombreDamesBlancs) * VALEUR_DAME;
+        return etat.nombrePionsNoirs - etat.nombrePionsBlancs +(etat.nombreDamesNoirs - etat.nombreDamesBlancs) * VALEUR_DAME;
     }
 
     gagne(etat,actions) {

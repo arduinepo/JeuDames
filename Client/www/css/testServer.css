@@ -324,7 +324,7 @@ td:first-child{
   }
   
 
-  /* Toggle this class - hide and show the popup */
+/* Toggle this class - hide and show the popup */
 .popup .show {
     z-index: 20;
     animation: fadeIn 2s;

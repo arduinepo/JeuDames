@@ -61,16 +61,13 @@
                 </ul>
                 <h1>TEST : </h1>
                 <ul class="list-button">
-                    <li onclick="searchGame()"><a>Victoire</a></li>
+                    <li onclick="endGame()"><a>endGame</a></li>
                 </ul>
                 <ul class="list-button">
-                    <li onclick="searchGame()"><a>Défaite</a></li>
+                    <li onclick="surrender()"><a>Se rendre</a></li>
                 </ul>
                 <ul class="list-button">
-                    <li onclick="searchGame()"><a>Se rendre</a></li>
-                </ul>
-                <ul class="list-button">
-                    <li onclick="searchGame()"><a>Déplacer</a></li>
+                    <li onclick="move()"><a>Déplacer</a></li>
                 </ul>
             </section>
             
@@ -93,9 +90,9 @@
                 <h1>Connection</h1>
                 <form action="">
                     <input id ="pseudoInput" type="text" class="" placeholder="pseudo"/>
-                    <input type="text" class="" placeholder="mot de passe"/>
+                    <input id ="passwordInput" type="text" class="" placeholder="mot de passe"/>
                 </form>
-                <button class="sucess" onclick="setPseudo(document.getElementById('pseudoInput').value)">Envoyer</button>
+                <button class="sucess" onclick="setPseudo(document.getElementById('pseudoInput').value,document.getElementById('passwordInput').value)">Envoyer</button>
     
                 <div>Votre pseudo est : </div>
             </div>

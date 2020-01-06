@@ -12,9 +12,12 @@ function sendMessageAll(msg)
     socket.emit('broadcast', msg);
 }
 
-function setPseudo(pseudo)
+function setPseudo(pseudo,password)
 {
-    socket.emit('setPseudo', pseudo);
+    sessionStorage.setItem("pseudo",pseudo);
+    sessionStorage.setItem("password",password);
+    console.log("Pseudo : "+pseudo,"Password : "+password);
+    //socket.emit('setPseudo', pseudo, password);
 }
 
 function surrender()
@@ -23,17 +26,31 @@ function surrender()
     socket.emit('surrender');
 }
 
+function endGame()
+{
+    console.log("click on victory")
+    socket.emit('endGame');
+}
+
 function searchGame(){
     socket.emit("searchGame");
 }
 
-function classement(){
+function classement()
+{
     console.log("Demande de classement");
     socket.emit("classement");
 }
 window.onload=classement();
 
 /*------------------------ Client side event listener. -----------------------*/  
+
+// Reception de connection 
+socket.on('receiveConnection',function(){
+    // TODO : condition : reco,en game etc
+    console.log("Connection :"+sessionStorage.getItem("pseudo"),sessionStorage.getItem("password"));
+    socket.emit("searchGame");
+});
 
 // It takes new messages from the server and appends it to HTML.  
 socket.on('receiveMessage',function(msg){
@@ -45,7 +62,7 @@ socket.on('receiveMessage',function(msg){
 socket.on('receiveEndGame',function(stateWin){
    
     console.log('EndGame receive-- client side');
-    stateWin ? writeToScreen("Victoire") : writeToScreen("Défaite");
+    stateWin ? notification("Victoire") : notification("Défaite");
 });
 
 // Reception changement de pseudo 
@@ -127,11 +144,12 @@ socket.on('receiveClassement',function(clients){
 
 });
 
-// Connection aux server
+// Reception des alertes 
 socket.on('receiveAlert',function(msg){
     console.log(msg);
     notification(msg);
 });
+
 /*---------------- Style -------------------------*/
 
 function writeToScreen(message)

@@ -349,7 +349,6 @@ td:first-child{
     animation: fadeIn 2s;
 }
 
-<<<<<<< HEAD
   
 /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {
@@ -358,7 +357,6 @@ td:first-child{
     100% {opacity: 0;visibility: hidden;}
 }
   
-=======
 .afterConnexion {
     visibility: hidden;
 }
@@ -368,4 +366,3 @@ td:first-child{
     top: 20%;
 }
 
->>>>>>> fc2dca8f2a5aae598113f16388e6b7ad7891285a

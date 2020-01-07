@@ -14,38 +14,22 @@ export class Jeu {
         } else this.ia = new JoueurAutomatiqueIntelligent(!couleurJoueur, 3);
     }
 
-    prendre1Pion(l1, c1, l2, c2) {
-        this.damier.prendre1Pion(l1, c1, l2, c2);
-        var ligneD = document.getElementsByTagName('g').item(l1);
-        var jetonD = ligneD.querySelector('circle#' + CSS.escape(c1));
-        var ligneA = document.getElementsByTagName('g').item(l2); // Ligne d'arrivée
-        var caseA = ligneA.querySelector('rect#' + CSS.escape(c2)); // Case d'arrivée
-        if (l1 > l2 && c1 < c2) {
-            var lignePrise = document.getElementsByTagName('g').item(l1-1);
-            var jetonPris = lignePrise.querySelector('circle#' + CSS.escape(c1+1));
-            
-        }
-        if (l1 > l2 && c1 > c2) {
-            var lignePrise = document.getElementsByTagName('g').item(l1-1);
-            var jetonPris = lignePrise.querySelector('circle#' + CSS.escape(c1-1));
-            
-        }
-        if (l1 < l2 && c1 < c2) {
-            var lignePrise = document.getElementsByTagName('g').item(l1+1);
-            var jetonPris = lignePrise.querySelector('circle#' + CSS.escape(c1+1));
-            
-        }
-        if (l1 < l2 && c1 > c2) {
-            var lignePrise = document.getElementsByTagName('g').item(l1+1);
-            var jetonPris = lignePrise.querySelector('circle#' + CSS.escape(c1-1));
-            
-        }
-        lignePrise.removeChild(jetonPris);
+    /* ------ Réalise un déplacement ------ */
+    deplacer1Case(l1, c1, l2, c2) {
+        this.damier.deplacer1Case(l1, c1, l2, c2);
         this.afficherDeplacement(l1, c1, l2, c2);
-
+        this.damier.tourBlanc = !this.damier.tourBlanc;
 
     }
 
+    /* ------ Réalise une prise ------ */
+    prendre1Pion(l1, c1, l2, c2) {
+        this.damier.prendre1Pion(l1, c1, l2, c2);
+        this.afficherPrise(l1, c1, l2, c2);
+
+    }
+
+    /* ------ Affiche un déplacement ------ */ 
     afficherDeplacement(l1, c1, l2, c2) {
         var ligneD = document.getElementsByTagName('g').item(l1);
         var jetonD = ligneD.querySelector('circle#' + CSS.escape(c1));
@@ -59,6 +43,7 @@ export class Jeu {
         jetonD.setAttribute('cy', cy.toString());
     }
 
+    /* ------ Affiche une prise ------ */
     afficherPrise(l1, c1, l2, c2) {
         var ligneD = document.getElementsByTagName('g').item(l1);
         var jetonD = ligneD.querySelector('circle#' + CSS.escape(c1));
@@ -67,34 +52,32 @@ export class Jeu {
         if (l1 > l2 && c1 < c2) {
             var lignePrise = document.getElementsByTagName('g').item(l1-1);
             var jetonPris = lignePrise.querySelector('circle#' + CSS.escape(c1+1));
-            
+            jetonPris.remove();
         }
         if (l1 > l2 && c1 > c2) {
             var lignePrise = document.getElementsByTagName('g').item(l1-1);
             var jetonPris = lignePrise.querySelector('circle#' + CSS.escape(c1-1));
-            
+            //lignePrise.removeChild(jetonPris);
+            jetonPris.remove();
         }
         if (l1 < l2 && c1 < c2) {
             var lignePrise = document.getElementsByTagName('g').item(l1+1);
             var jetonPris = lignePrise.querySelector('circle#' + CSS.escape(c1+1));
-            
+            //lignePrise.removeChild(jetonPris);
+            jetonPris.remove();
         }
         if (l1 < l2 && c1 > c2) {
             var lignePrise = document.getElementsByTagName('g').item(l1+1);
             var jetonPris = lignePrise.querySelector('circle#' + CSS.escape(c1-1));
-            
+            //lignePrise.removeChild(jetonPris);
+            jetonPris.remove();
         }
-        lignePrise.removeChild(jetonPris);
         this.afficherDeplacement(l1, c1, l2, c2);
     }
 
-    deplacer1Case(l1, c1, l2, c2) {
-        this.damier.deplacer1Case(l1, c1, l2, c2);
-        this.afficherDeplacement(l1, c1, l2, c2);
 
 
-    }
-
+    /* ------ Surligne les cases jouables ------ */
     surlignerCasesAccessibles(cases) {
         for (var i = 0; i < cases.length; i++) {
             var laLigne = document.getElementsByTagName('g').item(cases[i].ligne).children;
@@ -106,6 +89,7 @@ export class Jeu {
         }
     }
 
+    /* ------ Enlève le surlignement des cases jouables ------ */
     enleverSurlignement(cases) {
         for (var i = 0; i < cases.length; i++) {
             var laLigne = document.getElementsByTagName('g').item(cases[i].ligne).children;
@@ -117,6 +101,7 @@ export class Jeu {
         }
     }
 
+    /* ------ Réalise l'action de l'adversaire ------ */
     actionAdverse() {
         let action;
         if (window.game.ia !== undefined) {
@@ -128,6 +113,7 @@ export class Jeu {
        
     }
 
+    /* ------ Met à jour le damier pour le tour adverse ------ */
     updateGraphique(action) {
         let pion = this.damier.grille[action.ligneDepart()][action.colonneDepart()];
         if (action instanceof Mouvement) {
@@ -142,7 +128,9 @@ export class Jeu {
         const jeu = this;
         document.getElementsByTagName('svg')[0].onclick = function (event) {
             console.log(jeu.couleurJoueur + ' ' + jeu.damier.tourBlanc);
+            //On vérifie si c'est bien notre tour :
             if ((jeu.couleurJoueur && jeu.damier.tourBlanc) || (!jeu.couleurJoueur && !jeu.damier.tourBlanc)) {
+                //Cas où il s'agit du premier clic (sélection du pion à jouer) :
                 if (jeu.ligne1 === undefined && jeu.colonne1 === undefined) {
                     jeu.ligne1 = parseInt(event.target.parentNode.getAttribute('id'));
                     jeu.colonne1 = parseInt(event.target.getAttribute('id'));
@@ -155,15 +143,22 @@ export class Jeu {
                         jeu.ligne1 = undefined;
                         jeu.colonne1 = undefined;
                     }
-                }    
+                } 
+                //Cas où il s'agit du deuxième clic (case visée) :    
                 else {
+                    console.log("Deuxième clic");
                     jeu.ligne2 = parseInt(event.target.parentNode.getAttribute('id'));
                     jeu.colonne2 = parseInt(event.target.getAttribute('id'));
 
+                    //On vérifie que la case visée est accessible :
                     if (jeu.damier.estAccessible(jeu.ligne2, jeu.colonne2, jeu.cases)) {
+                        console.log("Case accessible");
                         let action;
                         let estDame = Math.abs(jeu.damier.grille[jeu.ligne1][jeu.colonne1]) === DAME_BLANC;
+
+                        //Cas où il s'agit d'une prise :
                         if (jeu.damier.pionAdverseEntreCases(jeu.ligne1, jeu.colonne1, jeu.ligne2, jeu.colonne2)) {
+                            console.log("C'est une prise");
                             console.log(estDame);
                             jeu.enleverSurlignement(jeu.cases);
                             jeu.prendre1Pion(jeu.ligne1, jeu.colonne1, jeu.ligne2, jeu.colonne2);
@@ -172,7 +167,9 @@ export class Jeu {
                             jeu.cases = jeu.damier.casesAccessiblesPourPriseDepuis(jeu.ligne2, jeu.colonne2);
                             jeu.surlignerCasesAccessibles(jeu.cases);
 
-                            while (jeu.cases.length > 0) {
+                            //Cas où il a possibilité d'effectuer plusieurs prises :
+                            if (jeu.cases.length > 0) {
+                                console.log("Prises multiples");
                                 document.getElementsByTagName('svg')[0].onclick = function (event) {
                                     jeu.ligne2 = parseInt(event.target.parentNode.getAttribute('id')),
                                     jeu.colonne2 = parseInt(event.target.getAttribute('id'));
@@ -187,9 +184,15 @@ export class Jeu {
                                         jeu.cases = jeu.damier.casesAccessiblesPourPriseDepuis(jeu.ligne2, colonne2);
                                     }
                                 }
+                            } else {
+                                //On passe le tour à l'adversaire :
+                                jeu.damier.tourBlanc = !jeu.damier.tourBlanc;
                             }
 
-                        } else {
+                        }
+                        //Cas où il s'agit seulement d'un déplacement :  
+                        else { 
+                            console.log("C'est un déplacement");
                             jeu.enleverSurlignement(jeu.cases);
                             jeu.deplacer1Case(jeu.ligne1, jeu.colonne1, jeu.ligne2, jeu.colonne2);
                             console.log(jeu.damier.toString());
@@ -206,6 +209,7 @@ export class Jeu {
                         window.game = jeu;
                         setTimeout(jeu.actionAdverse, 1000);
                     }
+                    //Cas où la case visée n'est pas accessible : 
                     else {
                         jeu.ligne2 = undefined;
                         jeu.colonne2 = undefined;

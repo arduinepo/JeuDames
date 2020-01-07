@@ -64,7 +64,11 @@ export class Damier {
                 this.nombreDamesNoirs--;
         }
         this.grille[l3][c3] = CASE_VIDE;
+<<<<<<< HEAD
         //this.tourBlanc=!this.tourBlanc;
+=======
+        this.tourBlanc=!this.tourBlanc;
+>>>>>>> 07f1c70f46f7d75d68175fde40d82401f4aae972
     }
 
     /* Déplace le pion situé en l1-c1 sur la case l2-c2, et le promeut en dame si l2 est la ligne de fond adverse du pion déplacé. */

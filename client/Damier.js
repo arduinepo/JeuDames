@@ -244,7 +244,8 @@ export class Damier {
                     case PION_NOIR:
                     case DAME_NOIR:
                         if (couleur) {
-                            let l3 = this.getLigneVoisine(l2, pos), c3 = this.getColonneVoisine(c2, pos);
+                            let l3 = this.getLigneVoisine(l2, pos);
+                            let c3 = this.getColonneVoisine(c2, pos);
                             if (this.grille[l3][c3] === CASE_VIDE)
                                 cases.push(new Case(l3, c3));
                         }

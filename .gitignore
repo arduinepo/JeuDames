@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /hooks/*
 /platforms/*
 /plugins/*
@@ -9,3 +10,8 @@
 /client/main.js
 /Client/platforms/*
 /Client/pasckage.json
+=======
+/.idea/
+/client/test.html
+/client/main.js
+>>>>>>> a29b1a15f616a70f89c3c998cebae0745a56f754

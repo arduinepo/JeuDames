@@ -67,7 +67,7 @@ export class Damier {
 <<<<<<< HEAD
         //this.tourBlanc=!this.tourBlanc;
 =======
-        this.tourBlanc=!this.tourBlanc;
+        //this.tourBlanc=!this.tourBlanc;
 >>>>>>> 07f1c70f46f7d75d68175fde40d82401f4aae972
     }
 
@@ -75,7 +75,7 @@ export class Damier {
     deplacer1Case(l1, c1, l2, c2) {
         this.grille[l2][c2] = this.grille[l1][c1];
         this.grille[l1][c1] = CASE_VIDE;
-        this.tourBlanc=!this.tourBlanc;
+        //this.tourBlanc=!this.tourBlanc;
     }
 
     /* Renvoie les cases accessibles par le pion, simple ou dame, situé en l-c. */

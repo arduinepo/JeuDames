@@ -151,7 +151,7 @@ export class Jeu {
         var pionCollonneSelectionne;
 
 
-        document.getElementsByTagName('svg')[0].onclick = function (event) {
+        document.getElementById('svg')[0].onclick = function (event) {
 
             // Remise à zéro du plateau lors d'un nouveau click
             if ( tableCasesAccessibles !== undefined ) tableCasesAccessibles = jeu.resetSurlignement(tableCasesAccessibles);

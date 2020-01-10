@@ -115,14 +115,10 @@ body{
     opacity: 0;
     width: 100%;
 }
-.div-slide_3{
-    overflow-y: hidden;
-    opacity: 0;
-    width: 100%;
-}
+
 .slidemenu #slide-item-1:checked ~ .slider .bar{ margin-left: 0; }
 .slidemenu #slide-item-2:checked ~ .slider .bar{ margin-left: 50%; }
-.slidemenu #slide-item-3:checked ~ .slider .bar{ margin-left: 67%; }
+
 .nav{
     list-style:none;
     margin:0;
@@ -230,7 +226,7 @@ body{
 }
 
 .window h1 {
-    margin-left: 25%;
+    margin-left: 24.5%;
     font-weight: bolder;
 }
 
@@ -384,12 +380,12 @@ td:first-child{
 }
 
 #modal-damierIA {
-
+    visibility: hidden;
     top: 20%;
 }
 
 #modal-damierVS {
-
+    visibility: hidden;
     top: 20%;
 }
 
@@ -398,18 +394,19 @@ svg {
     
 }
 
-.not-playableVS, .playableVS {
+.not-playable {
     fill:#c3996b;
-    
+    stroke:#231f20;
+    stroke-miterlimit:10;
 
 }
-.not-playableVS, .playableVS {
+
+.playable {
+    fill:#4d3120;
     stroke:#231f20;
     stroke-miterlimit:10;
 }
-.playableVS {
-    fill:#4d3120;
-}
+
 
 .pionB {
     fill:url(#myGradient);
@@ -420,16 +417,15 @@ svg {
 
 }
 
-.not-playable {
-    fill:#abbdf7;
+.monPseudo {
+    margin-top: -43%;
+    margin-left: 35%;
+}
 
+.pseudoAdversaire {
+    margin-left: 28%;
+    
 }
-.not-playable,.playable {
-    stroke:#231f20;
-    stroke-miterlimit:10;
-}
-.playable {
-    fill:#4c4b6b;
-}
+
 
 

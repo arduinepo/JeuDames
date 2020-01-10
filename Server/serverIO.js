@@ -18,8 +18,7 @@ io.on('connection', function(socket){
     // TODO : save game state, emit un message à l'adversaire, et event de forfait
   });
 
-
-  // Reception event de forfait
+  // Reception event de forfait après un certains temps
   socket.on('opponentLeave', function(){
     // TODO : Verification que l'adversaire est bien déconnecté
     if ( verifyopponentDisconnect() ){// TODO : L'adversaire ne s'est pas reconnecté
@@ -51,27 +50,38 @@ io.on('connection', function(socket){
     getclassement(socket);
   });
 
+  socket.on('startGame',function(clients){
+   
+  });
   // Lancement de la Game
   socket.on('searchGame', function(){
+    
     addToWaitingFile(socket);
     
     if ( searchplayer(socket) ){
       updateWaitingFile(socket);
-      sendMessageToGame(socket,"Votre adversaire est : "); 
+      sendMessageToGame(socket,"Votre adversaire est : ");
+      startGame(socket); 
     }
 
   });
-
   // Déplacement d'un pion
-  socket.on('movePion', function(){
-    
+  socket.on('movePion', function(l,c,newline,newcolumn,tour){
+    movePion(socket,l,c,newline,newcolumn,tour);
   });
-
+  // Prise d'un pion
+  socket.on('takePion', function(l,c,newline,newcolumn,tour){
+    takePion(socket,l,c,newline,newcolumn,tour);
+  });
+  socket.on('endTurn', function(tour){
+    endTurn(socket,tour);
+  });
   // endGame
   socket.on('endGame', function(){
-    
+    endGame(socket);
   });
 
 });
 
-server.listen(8000,'10.188.92.235');
+// TODO : Gestion de la deconnection
+server.listen(3000);

@@ -2,7 +2,7 @@
 export class Controller {
 
     constructor(jeu,ws){
-        console.log("New Object Controller");
+
         this.jeu = jeu;
         this.ws = ws;
         this.receiveServer(jeu,ws,this);
@@ -32,15 +32,15 @@ export class Controller {
         // Reception de connection 
         ws.socket.on('receiveConnection',function(){
             // TODO : condition : reco,en game etc
-            console.log("Connection :"+sessionStorage.getItem("pseudo"),sessionStorage.getItem("password"));
+
             //ws.socket.emit("searchGame");
         });
 
         // Reception du début de la game mis en place des listenners
         ws.socket.on('receiveStartGame',function (couleurPion,tour) {
-            couleurPion ? console.log("Vous etes les pions noirs") : console.log("Vous etes les pions blancs");  
+
             jeu.tour = tour;
-            console.log("StartGame par :"+ jeu.tour);
+
             c.versusOnline(jeu,ws,couleurPion);
             c.couleurPion = couleurPion;
           
@@ -64,9 +64,9 @@ export class Controller {
         ws.socket.on('receiveMovePion',function (l,c,newline,newcolumn,tour) {
             jeu.deplacer1Case(l,c,newline, newcolumn);
             //  On passe le tour à l'adversaire :
-            console.log("TOUR :"+jeu.tour)
+
             jeu.tour = tour;
-            jeu.damier.tourBlanc ? console.log("Au tours des noirs") : console.log("Au tours des blancs");
+
         });
 
         // It takes new messages from the server and appends it to HTML.  
@@ -160,7 +160,7 @@ export class Controller {
 
         // Reception des alertes 
         ws.socket.on('receiveAlert',function(msg){
-            console.log(msg);
+
             notification(msg);
         });
 
@@ -177,14 +177,13 @@ export class Controller {
 
 
         document.getElementsByTagName('svg')[0].onclick = function (event) {
-            couleurPion ? console.log("Vous etes les pions noirs") : console.log("Vous etes les pions blancs");  
+
             // Remise à zéro du plateau lors d'un nouveau click
             if ( tableCasesAccessibles !== undefined ) tableCasesAccessibles = jeu.resetSurlignement(tableCasesAccessibles);
             
             jeu.ligne1 = undefined;
             jeu.colonne1 = undefined;
-            console.log("Prise Multiple en cours ? : "+priseMultiple);
-            console.log("Tour de :"+jeu.tour+" et "+couleurPion);
+
             // Votre Tour de Jeu
             if ( jeu.tour == couleurPion ){
                 // La case selectionné
@@ -249,7 +248,7 @@ export class Controller {
                         }else{
                         // Déselection d'un Pion
                             jeu.pionEstselectionne = false;
-                            console.log("Case Inaccessible");
+
                         }
                     }
                    

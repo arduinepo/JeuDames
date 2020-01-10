@@ -35,15 +35,9 @@ function notification(text) {
   var popup = document.querySelector("#myPopup");
   popup.innerText = text;
   popup.classList.toggle("show");
-  setTimeout(function(){ popup.classList.remove("show"); }, 2000);
-  
+  setTimeout(function(){ popup.classList.remove("show"); }, 2000);  
 }
-function OpenDamier() {
-  console.log("OPENDAMIER")
-  console.log(document.getElementsByTagName('svg')[0]);
 
-  document.getElementById("modal-damier").style.visibility = "visible";
-}
 function genererClassement() {
   let classement = "<ul></ul>"; //Faire une boucle qui récupère les jouers (pseudo + nombre victoires) et les met dans une liste (<li></li>) par ordre décroissant
   let titre = "<a class='item'>Classement</a>"

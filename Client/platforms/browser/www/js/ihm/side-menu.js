@@ -38,3 +38,9 @@ function notification(text) {
   setTimeout(function(){ popup.classList.remove("show"); }, 2000);
   
 }
+function OpenDamier() {
+  console.log("OPENDAMIER")
+  console.log(document.getElementsByTagName('svg')[0]);
+
+  document.getElementById("modal-damier").style.visibility = "visible";
+}

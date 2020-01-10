@@ -102,15 +102,17 @@ export class Damier {
     
     casesAccessiblesPourPriseDepuis(l, c) {
         let cases = [];
-        switch (this.grille[l][c]) {
-            case DAME_NOIR:
-            case DAME_BLANC:
-                cases.push(...this.casesAccessiblesPriseDame(l, c));
-                break;
-            case PION_NOIR:
-            case PION_BLANC:
-                cases.push(...this.casesAccessiblesPrisePion(l, c));
-                break;
+        if ( l < PLATEAU_LONGUEUR && c < PLATEAU_LONGUEUR ){
+            switch (this.grille[l][c]) {
+                case DAME_NOIR:
+                case DAME_BLANC:
+                    cases.push(...this.casesAccessiblesPriseDame(l, c));
+                    break;
+                case PION_NOIR:
+                case PION_BLANC:
+                    cases.push(...this.casesAccessiblesPrisePion(l, c));
+                    break;
+            }
         }
         console.log("CASES ::"+cases.length);
         return cases;

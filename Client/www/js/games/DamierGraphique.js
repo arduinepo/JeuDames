@@ -6,9 +6,15 @@ import {CASE_VIDE, DAME_BLANC, BLANC} from "./Constantes.js";
 
 export class Jeu {
     constructor(couleurJoueur, vsHumain) { 
+        console.log("New Object Jeu");
         this.damier = new Damier();
         this.couleurJoueur = couleurJoueur;
-        this.addListeners();
+
+        this.tour;
+        this.pionLigneSelectionne;
+        this.pionColonneSelectionne;
+        this.pionEstselectionne = false;
+        this.priseMultiple = false;
         if (vsHumain) {
 
         } else this.ia = new JoueurAutomatiqueIntelligent(!couleurJoueur, 3);
@@ -18,8 +24,8 @@ export class Jeu {
     deplacer1Case(l1, c1, l2, c2) {
         this.damier.deplacer1Case(l1, c1, l2, c2);
         this.afficherDeplacement(l1, c1, l2, c2);
+        this.pionEstselectionne = false;
         this.damier.tourBlanc = !this.damier.tourBlanc;
-
     }
 
     /* ------ Réalise une prise ------ */
@@ -38,9 +44,12 @@ export class Jeu {
         var cx = parseInt(caseA.getAttribute('x')) + 17.5; // Nouvelle position x du jeton
         var cy = parseInt(caseA.getAttribute('y')) + 17.5; // Nouvelle position y du jeton
         caseA.after(jetonD); // Insertion du jeton juste après la case d'arrivée dans le svg
-        jetonD.setAttribute('id', c2);
-        jetonD.setAttribute('cx', cx.toString());
-        jetonD.setAttribute('cy', cy.toString());
+        if ( jetonD != null ){
+            jetonD.setAttribute('id', c2);
+            jetonD.setAttribute('cx', cx.toString());
+            jetonD.setAttribute('cy', cy.toString());
+        }
+
     }
 
     /* ------ Affiche une prise ------ */
@@ -52,30 +61,28 @@ export class Jeu {
         if (l1 > l2 && c1 < c2) {
             var lignePrise = document.getElementsByTagName('g').item(l1-1);
             var jetonPris = lignePrise.querySelector('circle#' + CSS.escape(c1+1));
-            jetonPris.remove();
+            if ( jetonPris != null ) jetonPris.remove();
         }
         if (l1 > l2 && c1 > c2) {
             var lignePrise = document.getElementsByTagName('g').item(l1-1);
             var jetonPris = lignePrise.querySelector('circle#' + CSS.escape(c1-1));
             //lignePrise.removeChild(jetonPris);
-            jetonPris.remove();
+            if ( jetonPris != null ) jetonPris.remove();
         }
         if (l1 < l2 && c1 < c2) {
             var lignePrise = document.getElementsByTagName('g').item(l1+1);
             var jetonPris = lignePrise.querySelector('circle#' + CSS.escape(c1+1));
             //lignePrise.removeChild(jetonPris);
-            jetonPris.remove();
+            if ( jetonPris != null ) jetonPris.remove();
         }
         if (l1 < l2 && c1 > c2) {
             var lignePrise = document.getElementsByTagName('g').item(l1+1);
             var jetonPris = lignePrise.querySelector('circle#' + CSS.escape(c1-1));
             //lignePrise.removeChild(jetonPris);
-            jetonPris.remove();
+            if ( jetonPris != null ) jetonPris.remove();
         }
         this.afficherDeplacement(l1, c1, l2, c2);
     }
-
-
 
     /* ------ Surligne les cases jouables ------ */
     surlignerCasesAccessibles(cases) {
@@ -133,7 +140,7 @@ export class Jeu {
         }
     }
 
-    addListeners() {
+    versusOffline() {
         const jeu = this;
         var constant_couleur_Joueur = true;
         var tableCasesAccessibles = []; // tableau contenant les cases acesibles
@@ -242,6 +249,4 @@ export class Jeu {
             //switch (  ){}
         }
     }
-
-
 }

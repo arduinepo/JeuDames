@@ -198,6 +198,7 @@ body{
     position: absolute;
     top: 20%;
     left: 20%;
+    z-index: 20;
 }
 
 .window input {
@@ -362,7 +363,7 @@ td:first-child{
 }
 
 #modal-damier {
-    visibility: hidden;
-    top: 20%;
+    
+
 }
 

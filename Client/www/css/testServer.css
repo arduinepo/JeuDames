@@ -55,6 +55,8 @@ body{
     float: left;
     color: #333;
     opacity: 0.2;
+    margin-left: 8%;
+    margin-right: 8%;
 }
 .slidemenu label:hover{
     cursor: pointer;
@@ -73,7 +75,7 @@ body{
     border-radius: 5px;
 }
 .slider .bar{
-    width: 33%;
+    width: 50%;
     height: 5px;
     background: #333;
     border-radius: 5px;
@@ -110,7 +112,7 @@ body{
     width: 100%;
 }
 .slidemenu #slide-item-1:checked ~ .slider .bar{ margin-left: 0; }
-.slidemenu #slide-item-2:checked ~ .slider .bar{ margin-left: 33%; }
+.slidemenu #slide-item-2:checked ~ .slider .bar{ margin-left: 50%; }
 .slidemenu #slide-item-3:checked ~ .slider .bar{ margin-left: 67%; }
 .nav{
     list-style:none;
@@ -224,9 +226,10 @@ body{
     width: 60%;
     position: absolute;
     top: 50%;
-    left: 55%;
+    left: 50%;
     transform: translate(-50%, -50%);
     padding: 2em;
+    padding-left: 2em;
     background: #fff;
 }
 .modal-window header {
@@ -364,6 +367,54 @@ td:first-child{
 
 #modal-damier {
     
+}
+#modal-damierIA {
+    visibility: hidden;
+    top: 20%;
+}
+
+#modal-damierVS {
+    visibility: hidden;
+    top: 20%;
+}
+
+svg {
+    padding-left: -300px;
+    
+}
+
+.not-playableVS, .playableVS {
+    fill:#c3996b;
+    
 
 }
+.not-playableVS, .playableVS {
+    stroke:#231f20;
+    stroke-miterlimit:10;
+}
+.playableVS {
+    fill:#4d3120;
+}
+
+.pionB {
+    fill:url(#myGradient);
+}
+
+.pionN {
+    fill:url(#myGradient2);
+
+}
+
+.not-playable {
+    fill:#abbdf7;
+
+}
+.not-playable,.playable {
+    stroke:#231f20;
+    stroke-miterlimit:10;
+}
+.playable {
+    fill:#4c4b6b;
+}
+
 

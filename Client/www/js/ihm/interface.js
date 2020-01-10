@@ -44,3 +44,9 @@ function OpenDamier() {
 
   document.getElementById("modal-damier").style.visibility = "visible";
 }
+function genererClassement() {
+  let classement = "<ul></ul>"; //Faire une boucle qui récupère les jouers (pseudo + nombre victoires) et les met dans une liste (<li></li>) par ordre décroissant
+  let titre = "<a class='item'>Classement</a>"
+  document.getElementById('mySidenav').appendChild(titre);
+  document.getElementById('mySidenav').appendChild(classement);
+}

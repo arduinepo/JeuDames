@@ -102,7 +102,7 @@ export class Jeu {
             var laLigne = document.getElementsByTagName('g').item(cases[i].ligne).children;
             for (var j = 0; j < laLigne.length; j++) {
                 if (parseInt(laLigne.item(j).getAttribute("id")) === cases[i].colonne) {
-                    laLigne.item(j).style.fill = "#3b2314";
+                    laLigne.item(j).style.fill = "#4d3120";
                 }
             }
         }

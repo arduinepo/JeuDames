@@ -1,9 +1,9 @@
 {
   "background_color": "#FFF",
   "display": "standalone",
-  "name": "WebSocket",
-  "short_name": "WebSocket",
-  "version": "fr.uga.miashs",
+  "name": "HelloCordova",
+  "short_name": "HelloCordova",
+  "version": "fr.uga.miashs.dames",
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
   "author": "Apache Cordova Team",
   "icons": [],

@@ -3,9 +3,12 @@
 <html>
     <head>
         <!--<meta http-equiv="Content-Security-Policy" content=" data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
-        --><meta name="format-detection" content="telephone=no">
-        <meta http-equiv="Content-Security-Policy" content=" data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; media-src *; img-src 'self' data: content:; font-src 'self' https://fonts.gstatic.com;">
         <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Content-Security-Policy" content=" data: gap: https://ssl.gstatic.com 'unsafe-eval'; 
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+        media-src *; img-src 'self' data: content:; 
+        font-src 'self' https://fonts.gstatic.com;">
+        <meta name="format-detection" content="telephone=no">-->
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="css/index.css">
@@ -22,7 +25,7 @@
             <button id="sendPseudo" class="sucess">Envoyer</button>
             <button class="success" onclick="
              document.getElementById('afterConnexion').style.visibility = 'visible'; 
-             document.getElementById('connexion').style.visibility = 'hidden'">Se connecter</button>
+             document.getElementById('connexion').style.visibility = 'hidden'">Se connecter</a></button>
 
            <!--<div>Votre pseudo est : </div>--> 
         </div>
@@ -78,7 +81,7 @@
                     <li id="searchGame" onclick="style='visibility:hidden'"><!--<a href="#open-modal-play"> --><a> Commencer une partie</a></li>
                 </ul>
                 
-                <h3>Pseudo aversaire</h3>
+                <h3 id="stpTEST">Pseudo aversaire</h3>
                 <div id="modal-damier" >
                     <div id="modal-damierVS">
                         <svg xmlns="http://www.w3.org/2000/svg" width="450" height="450" viewBox="130 0 600 600">
@@ -379,26 +382,6 @@
             
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div id="slide_2"class="div-slide div-slide_2">           
             <section class="action">
                 <ul class="list-button">
@@ -407,7 +390,7 @@
             </section>
            
             <div id="modal-damierIA">
-                <svg xmlns="http://www.w3.org/2000/svg" width="450" height="450" viewBox="130 0 600 600">
+                <svg id="playvsIA" xmlns="http://www.w3.org/2000/svg" width="450" height="450" viewBox="130 0 600 600">
         
                     <!-- Ligne 1 -->
                     <g id="0">
@@ -703,13 +686,11 @@
     </div>
 
 
-
-
-        <!-- TODO: Regrouper-->
-        <script src="js/socket.io.js"></script>
+        <script type="text/javascript" src="js/socket.io.js"></script>
         <script type="module" src="js/games/main.js"></script>
-        <script type="module"" src="js/websocket.js"></script>
-        <script type="text/javascript" src="js/ihm/interface.js"></script>
+        <script type="text/javascript" src="js/websocket.js"></script>
+        <script type="text/javascript" src="js/ihm/interface.js">  </script>  
+
 
 </body>
 </html>

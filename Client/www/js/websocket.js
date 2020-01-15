@@ -6,10 +6,12 @@ import {Jeu} from "./games/DamierGraphique.js";
 export class Websocket {
 
     constructor(adresseServeur,portServeur,socket){
+        
         console.log("New Object Websocket");
         this.adresseServeur = adresseServeur;
         this.portServeur = portServeur;
         this.socket = socket;
+        
     }
 
     sendMessage(msg)
@@ -69,8 +71,7 @@ export class Websocket {
     }
     writeToScreen(message)
     {
-        var pre = document.createElement("p");
-        pre.style.wordWrap = "break-word";
+        var pre = document.createElement("h1");
         pre.innerHTML = message;
 
     }

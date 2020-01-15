@@ -1,11 +1,10 @@
 /hooks/*
 /platforms/*
 /plugins/*
-/Server/node_modules/*
+
 /Client/node_modules/*
 !/Server/node_modules/UserManagement     
 /.idea/*
 /client/test.html
-/client/main.js
 /Client/platforms/*
 /Client/pasckage.json

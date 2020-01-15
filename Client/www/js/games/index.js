@@ -17,6 +17,10 @@
  * under the License.
  */
 // Fait appel à test.js (sous-dossier node_modules)
+
+import {Jeu} from "./DamierGraphique.js";
+import {Websocket} from "../websocket.js";
+import {Controller} from "../controller.js";
 var app = {
     
     // Application Constructor
